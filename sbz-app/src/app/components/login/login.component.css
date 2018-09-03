@@ -70,3 +70,11 @@ input[type=submit]:hover {
     background-color: #999999;
     padding: 10px 0 10px 0;
 }
+
+.is-invalid {
+    border-color: #C62828;
+}
+
+.invalid-feedback {
+    color: #C62828;
+}
