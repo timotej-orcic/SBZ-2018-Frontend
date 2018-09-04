@@ -12,13 +12,13 @@
         <a class="nav-link" href="admin-discounts">Set discounts</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <label>Hello {{username}}! </label>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link active" (click)="logout()">Logout</a>
-        </li>
-      </ul>
-    </form>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <span class="navbar-text">Hello {{username}}! </span>
+      </li>
+      <li class="nav-item active">
+        <button class="btn btn-link" type="button" style="cursor: pointer"(click)="logout()">Logout</button>
+      </li>
+    </ul>
   </div>
 </nav>

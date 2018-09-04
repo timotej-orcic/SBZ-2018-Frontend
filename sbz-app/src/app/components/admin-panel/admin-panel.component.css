@@ -1,0 +1,39 @@
+.title {
+    margin-top: 5%;
+    text-align: center;
+    color: #454545;
+}
+
+.div-rel {
+    position: relative;
+}
+
+.div-jumbo {
+    background-color:rgba(245,245,245, 0.6);
+    margin: 0 auto;
+}
+
+.center {
+    text-align: center;
+}
+
+.font-btn {
+    background: none;
+    border: none;
+}
+
+.hover-blue {
+    color:#64B5F6;
+}
+
+.hover-blue:focus, .hover-blue:hover {
+    color: #2196F3;
+}
+
+.is-invalid {
+    border-color: #C62828;
+}
+
+.invalid-feedback {
+    color: #C62828;
+}
