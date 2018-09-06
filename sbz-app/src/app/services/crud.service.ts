@@ -24,14 +24,11 @@ export class CrudService {
     return this.httpClient.get('api/rest/secured/admin/getProducts', {headers : this.setHeaders(null)});
   }
 
-  addProduct(product: Product) {
+  addProduct(product: Product, image: File) {
     const payload = new FormData();
-    payload.append('name', product.name);
-    payload.append('manufactorer', product.manufactorer);
-    payload.append('description', product.description);
-    payload.append('price', product.price.toString());
-    payload.append('warrantyInMonths', product.warrantyInMonths.toString());
-    payload.append('image', product.image);
+
+    payload.append('product', new Blob([JSON.stringify(product)], {type: 'application/json'}));
+    payload.append('image', image, image.name);
 
     const params = new HttpParams();
     return this.httpClient.post('/api/rest/secured/admin/addProduct', payload, {params, headers : this.setHeaders(null)});

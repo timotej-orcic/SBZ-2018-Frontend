@@ -4,6 +4,14 @@
     color: #454545;
 }
 
+.gray {
+    color: #454545;
+}
+
+.blue {
+    color: #1E88E5;
+}
+
 .div-rel {
     position: relative;
 }
@@ -28,6 +36,14 @@
 
 .hover-blue:focus, .hover-blue:hover {
     color: #2196F3;
+}
+
+.hover-gray {
+    color:#757575;
+}
+
+.hover-gray:focus, .hover-gray:hover {
+    color: #424242;
 }
 
 .is-invalid {
