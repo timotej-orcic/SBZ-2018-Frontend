@@ -5,9 +5,6 @@
     </div>
 </div>
 <br />
-<div class="row center">
-    <app-alert></app-alert>
-</div>
 <div class="row center">    
     <div class="col">
         <button class="btn btn-default font-btn" title="Add new product" (click)="smartModalService.getModal('productModal').open()">
@@ -15,48 +12,54 @@
         </button>
     </div>
 </div>
-<div class="div-rel">
-    <br />
-    <div class="row" *ngFor = "let dispProd of products">
-        <div class="col col-lg-2"></div>
-        <div class="col col-lg-8 jumbotron div-jumbo">
-            <div class="row">
-                <div class="col col-lg-3">
-                    <h3 class="gray">{{dispProd.product.name}}</h3>
-                    <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
-                    <img [src]="dispProd.image.src" height="128" width="128">
-                </div>
-                <div class="col col-lg-4">
-                    <h3 class="gray center">Description</h3>
-                    <p class="center">{{dispProd.product.description}}</p>
-                </div>
-                <div class="col col-lg-2">
-                    <h4 class="gray center">Price</h4>
-                    <h4 class="blue center">{{dispProd.product.price}}</h4>
+<div class="row">
+    <div class="col col-lg-2"></div>
+    <div class="col col-lg-8">
+        <div class="div-rel">
+        <br />
+            <div class="row" *ngFor = "let dispProd of products">
+                <div class="col col-lg-12 jumbotron div-jumbo">
                     <div class="row">
-                        &nbsp;
+                        <div class="col col-lg-3">
+                            <h3 class="gray">{{dispProd.product.name}}</h3>
+                            <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
+                            <img [src]="dispProd.image.src" height="128" width="128">
+                        </div>
+                        <div class="col col-lg-4">
+                            <h3 class="gray center">Description</h3>
+                            <p class="center">{{dispProd.product.description}}</p>
+                        </div>
+                        <div class="col col-lg-2">
+                            <h4 class="gray center">Price</h4>
+                            <h4 class="blue center">{{dispProd.product.price}}</h4>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <h4 class="gray center">Warranty in months</h4>
+                            <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
+                        </div>
+                        <div class="col col-lg-3 center">
+                            <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)" >
+                                <span class="hover-blue"><fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa></span>
+                            </button>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <button class="btn btn-default font-btn" title="Delete product" (click)="deleteProduct(dispProd.product.id)" >
+                                <span class="hover-gray"><fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa></span>
+                            </button>
+                        </div>
                     </div>
-                    <h4 class="gray center">Warranty in months</h4>
-                    <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
                 </div>
-                <div class="col col-lg-3 center">
-                    <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)" >
-                        <span class="hover-blue"><fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa></span>
-                    </button>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                    <div class="row">
-                        &nbsp;
-                    </div>
-                    <button class="btn btn-default font-btn" title="Delete product" >
-                        <span class="hover-gray"><fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa></span>
-                    </button>
-                </div>
+                &nbsp;
             </div>
         </div>
-        <div class="col col-lg-2"></div>
-        &nbsp;
+    </div>
+    <div class="col col-lg-2">
+        <app-alert></app-alert>
     </div>
 </div>
 
@@ -69,6 +72,9 @@
         <h2 class="title">Edit product</h2>
     </span>
     <form [formGroup] = "productForm" (ngSubmit) = "postForm(productForm.value)">
+        <div class="form-group">
+            <input type="hidden" formControlName="id" class="form-control">
+        </div>
         <div class="form-group">
             <input type="text" formControlName="name" class="form-control" placeholder="Name"
             [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
@@ -114,7 +120,7 @@
             &nbsp;
         </div>
         <span *ngIf="!editing || (editing && editingImage)">
-            <input type="file" accept="image/*" class="form-control"
+            <input #imageInput type="file" accept="image/*" class="form-control"
             [ngClass]="{ 'is-invalid': submitted && !isFileAttached }" (change)="onFileChange($event)">
             <div *ngIf="submitted && !isFileAttached" class="invalid-feedback">
                 <div *ngIf="submitted && !isFileAttached">Image is required</div>

@@ -3,39 +3,46 @@
     <h2 id="title">Welcome to the NetGear Webshop</h2>
   </div>
 </div>
-<div class="container" id="container1">
-  <app-alert></app-alert>
-  <form [formGroup] = "loginForm" (ngSubmit) = "login(loginForm.value)">
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <input type="text" formControlName="username" class="form-control" placeholder="Username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" >
-          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-            <div *ngIf="f.username.errors.required">Username is required</div>
-            <div *ngIf="f.username.errors.minlength">Minimum length is 4 characters</div>
-            <div *ngIf="f.username.errors.maxlength">Maximum length is 20 characters</div>
+<div class="row">
+  <div class="col col-lg-2"></div>
+  <div class="col col-lg-8">
+      <div class="container" id="container1">
+        <form [formGroup] = "loginForm" (ngSubmit) = "login(loginForm.value)">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <input type="text" formControlName="username" class="form-control" placeholder="Username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" >
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                  <div *ngIf="f.username.errors.required">Username is required</div>
+                  <div *ngIf="f.username.errors.minlength">Minimum length is 4 characters</div>
+                  <div *ngIf="f.username.errors.maxlength">Maximum length is 20 characters</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="password" formControlName="password" class="form-control" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" >
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required</div>
+                  <div *ngIf="f.password.errors.minlength">Minimum length is 8 characters</div>
+                  <div *ngIf="f.password.errors.maxlength">Maximum length is 20 characters</div>
+                </div>
+              </div>
+              <input type="submit" name="loginBtn" value="Login">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <input type="password" formControlName="password" class="form-control" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" >
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-            <div *ngIf="f.password.errors.minlength">Minimum length is 8 characters</div>
-            <div *ngIf="f.password.errors.maxlength">Maximum length is 20 characters</div>
-          </div>
-        </div>
-        <input type="submit" name="loginBtn" value="Login">
+        </form>
       </div>
-    </div>
-  </form>
-</div>
-<div class="container" id="container2">
-  <div class="row">
-    <div class="col">
-      <a href="register" style="color:white" class="btn">Register</a>
-    </div>
-    <div class="col">
-      <a href="#" style="color:white" class="btn">Browse without authentication</a>
-    </div>
+      <div class="container" id="container2">
+        <div class="row">
+          <div class="col">
+            <a href="register" style="color:white" class="btn">Register</a>
+          </div>
+          <div class="col">
+            <a href="#" style="color:white" class="btn">Browse without authentication</a>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="col col-lg-2">
+    <app-alert></app-alert>
   </div>
 </div>

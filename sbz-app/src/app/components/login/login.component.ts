@@ -35,14 +35,17 @@ export class LoginComponent implements OnInit {
 
     this.loginService.login(user).subscribe((res: any) => {
       if (res.success) {
-        localStorage.setItem('userToken', res.payload);
-        const loggedUser = JSON.parse(window.atob(res.payload.split('.')[1]));
-        const userRole = loggedUser.role[0].authority;
-        if ( userRole === '0') {
-          this.router.navigate(['web-shop']);
-        } else {
-          this.router.navigate(['admin-panel']);
-        }
+        this.alertService.success(res.message);
+        setTimeout(() => {
+          localStorage.setItem('userToken', res.payload);
+          const loggedUser = JSON.parse(window.atob(res.payload.split('.')[1]));
+          const userRole = loggedUser.role[0].authority;
+          if ( userRole === '0') {
+            this.router.navigate(['web-shop']);
+          } else {
+            this.router.navigate(['admin-panel']);
+          }
+        }, 1000);
       } else {
         this.alertService.error(res.message);
       }
