@@ -33,9 +33,11 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.loginService.logout(this.username).subscribe((res: any) => {
       if (res.success) {
-        localStorage.removeItem('userToken');
-        this.router.navigate(['']);
         this.alertService.success(res.message);
+        setTimeout(() => {
+          localStorage.removeItem('userToken');
+          this.router.navigate(['']);
+        }, 1000);
       } else {
         this.alertService.error(res.message);
       }
