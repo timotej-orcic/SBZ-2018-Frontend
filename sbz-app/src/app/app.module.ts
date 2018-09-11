@@ -12,6 +12,9 @@ import { AlertComponent } from './components/alert/alert.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+  MatCheckboxModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,14 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
     ReactiveFormsModule,
     HttpClientModule,
     AngularFontAwesomeModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

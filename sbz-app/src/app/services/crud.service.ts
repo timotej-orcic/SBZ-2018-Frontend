@@ -57,4 +57,20 @@ export class CrudService {
 
     return this.httpClient.get('api/rest/secured/admin/deleteProduct', {params: params, headers: this.setHeaders(null)});
   }
+
+  setShoppingAgenda(agenda: string) {
+    let params = new HttpParams();
+    params = params.append('agenda', agenda);
+
+    return this.httpClient.get('api/rest/secured/web-shop/setAgenda', {params: params, headers: this.setHeaders(null)});
+  }
+
+  findSingleProduct(product) {
+    const payload = new FormData();
+
+    payload.append('searchProduct', new Blob([JSON.stringify(product)], {type: 'application/json'}));
+
+    const params = new HttpParams();
+    return this.httpClient.post('/api/rest/secured/web-shop/findSingleProduct', payload, {params, headers : this.setHeaders(null)});
+  }
 }

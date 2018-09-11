@@ -1,0 +1,49 @@
+.div-jumbo {
+    background-color:rgba(245,245,245, 0.6);
+    margin-top: 15%;
+}
+
+.div-jumbo:hover{
+    background-color: #E0E0E0;
+    cursor: pointer;
+}
+
+.title {
+    margin-top: 5%;
+    text-align: center;
+    color: #454545;
+}
+
+.center {
+    text-align: center;
+}
+
+.topMargin {
+    margin-top: 10%; 
+}
+
+.wide {
+    width: -webkit-fill-available;
+}
+
+.error-font {
+    font-size: 12px;
+}
+
+.price {
+    font-weight: 800;
+    color: #ffc107;
+    float: right; 
+}
+
+.gray {
+    color: #454545;
+}
+
+.is-invalid {
+    border-color: #C62828;
+}
+
+.invalid-feedback {
+    color: #C62828;
+}
