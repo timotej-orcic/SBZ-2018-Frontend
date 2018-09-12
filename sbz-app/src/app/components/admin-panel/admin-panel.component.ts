@@ -39,7 +39,7 @@ export class AdminPanelComponent implements OnInit {
         this.crudService.getProducts().subscribe((res: any) => {
           if (res.success) {
             res.payload.forEach(element => {
-              const resProduct = new Product(element.id, element.name, element.manufactorer,
+              const resProduct = new Product(element.id, element.type, element.manufactorer,
                 element.description, element.price, element.warrantyInMonths);
               const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
                 element.base64Image.type, element.base64Image.imageBytes);
@@ -61,7 +61,7 @@ export class AdminPanelComponent implements OnInit {
   buildForm() {
     this.productForm = this.formBuilder.group({
       id: [''],
-      name: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      type: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(300)]],
       price: ['', [Validators.required, Validators.min(0), Validators.pattern('((0|([1-9]\d*)){1,10})(\.\d{1,4})?')]],
@@ -92,7 +92,7 @@ export class AdminPanelComponent implements OnInit {
             this.alertService.success(res.message);
             const displayProduct = this.products.find(x => x.product.id === res.payload.id);
             if (displayProduct !== null) {
-              displayProduct.product.name = res.payload.name;
+              displayProduct.product.type = res.payload.type;
               displayProduct.product.manufactorer = res.payload.manufactorer;
               displayProduct.product.description = res.payload.description;
               displayProduct.product.price = res.payload.price;
@@ -111,7 +111,7 @@ export class AdminPanelComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.success) {
           this.alertService.success(res.message);
-          const resProduct = new Product(res.payload.id, res.payload.name, res.payload.manufactorer,
+          const resProduct = new Product(res.payload.id, res.payload.type, res.payload.manufactorer,
             res.payload.description, res.payload.price, res.payload.warrantyInMonths);
           const resFile = new DisplayFile(res.payload.base64Image.id, res.payload.base64Image.name,
             res.payload.base64Image.type, res.payload.base64Image.imageBytes);
@@ -130,7 +130,7 @@ export class AdminPanelComponent implements OnInit {
       this.editing = true;
       this.productForm.patchValue({
         id: displayProduct.product.id,
-        name: displayProduct.product.name,
+        type: displayProduct.product.type,
         manufactorer: displayProduct.product.manufactorer,
         description: displayProduct.product.description,
         price: displayProduct.product.price,

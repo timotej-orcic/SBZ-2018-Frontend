@@ -14,7 +14,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-  MatCheckboxModule, MatButtonModule } from '@angular/material';
+  MatCheckboxModule, MatButtonModule, MatTabsModule } from '@angular/material';
+import { SingleProductComponent } from './components/single-product/single-product.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     AdminPanelComponent,
     WebShopComponent,
     AlertComponent,
-    NavbarComponent
+    NavbarComponent,
+    SingleProductComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

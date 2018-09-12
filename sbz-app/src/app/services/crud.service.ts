@@ -66,11 +66,6 @@ export class CrudService {
   }
 
   findSingleProduct(product) {
-    const payload = new FormData();
-
-    payload.append('searchProduct', new Blob([JSON.stringify(product)], {type: 'application/json'}));
-
-    const params = new HttpParams();
-    return this.httpClient.post('/api/rest/secured/web-shop/findSingleProduct', payload, {params, headers : this.setHeaders(null)});
+    return this.httpClient.post('/api/rest/secured/web-shop/findSingleProduct', product, {headers : this.setHeaders(null)});
   }
 }

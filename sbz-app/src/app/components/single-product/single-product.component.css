@@ -1,0 +1,65 @@
+.title {
+    margin-top: 2%;
+    text-align: center;
+    color: #454545;
+}
+
+.wide {
+    width: -webkit-fill-available;
+}
+
+.error-font {
+    font-size: 12px;
+}
+
+.price {
+    font-weight: 800;
+    color: #ffc107;
+    float: right; 
+}
+
+.gray {
+    color: #454545;
+}
+
+.is-invalid {
+    border-color: #C62828;
+}
+
+.invalid-feedback {
+    color: #C62828;
+}
+
+.font-btn {
+    background: none;
+    border: none;
+}
+
+.hover-gray {
+    color:#757575;
+}
+
+.hover-gray:focus, .hover-gray:hover {
+    color: #424242;
+}
+
+.div-jumbo {
+    background-color:rgba(245,245,245, 0.6);
+    margin: 0 auto;
+}
+
+.blue {
+    color: #1E88E5;
+}
+
+.div-rel {
+    position: relative;
+}
+
+.topMargin {
+    margin-top: 5%; 
+}
+
+.leftMargin {
+    margin-left: 10px; 
+}

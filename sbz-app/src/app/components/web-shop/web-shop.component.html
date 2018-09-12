@@ -1,87 +1,27 @@
 <app-navbar></app-navbar>
-<div *ngIf="!agendaSelected" class="row">
+<!--Home-->
+<div *ngIf="showMe" class="row">
   <div class="col col-lg-2"></div>
   <div class="col col-lg-8">
     <div class="row">
-      <div class="col col-lg-5 jumbotron div-jumbo center" (click)="singleProducts()">
+      <div class="col col-lg-5 jumbotron div-jumbo-home center" (click)="singleProducts()">
         <h2 class="gray">Buy single product</h2>
         <div class="row">
           &nbsp;
         </div>
-        <img src="../../../assets/images/lan-cable.jpg" height="256" width="256"/>
+        <img src="../../../assets/images/lan-cable.jpg" height="256" width="256" />
       </div>
       <div class="col col-lg-2"></div>
-      <div class="col col-lg-5 jumbotron div-jumbo center" (click)="networkSystems()">
+      <div class="col col-lg-5 jumbotron div-jumbo-home center" (click)="networkSystems()">
         <h2 class="gray">Buy entire network system</h2>
         <div class="row">
           &nbsp;
         </div>
-        <img src="../../../assets/images/network-system.jpg" height="256" width="256"/>
+        <img src="../../../assets/images/network-system.jpg" height="256" width="256" />
       </div>
     </div>
   </div>
   <div class="col col-lg-2"></div>
 </div>
-<div *ngIf="singleProduct">
-  <div class="row">
-    <div class="col">
-        <h1 class="title">Browse single product</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col col-lg-3"></div>
-    <div class="col col-lg-6">
-      <form [formGroup]="singleProductForm" (ngSubmit)="findSingleProduct(singleProductForm.value)">
-        <div class="form-group">
-            <h4 class="gray">Product type</h4>
-            <mat-form-field>
-              <mat-select formControlName="productType" [ngClass]="{ 'is-invalid': (spf.productType.touched && spf.productType.errors) || (submitted && spf.productType.errors) }">
-                <mat-option *ngFor="let pType of productTypes" [value]="pType">{{pType}}</mat-option>
-              </mat-select>
-              <mat-error *ngIf="(spf.productType.touched && spf.productType.errors) || (submitted && spf.productType.errors)" class="invalid-feedback">
-                  <div class="error-font" *ngIf="spf.productType.errors?.required">Product type is required</div>
-              </mat-error>
-            </mat-form-field>
-        </div>
-        <div class="form-group">
-          <h4 class="gray">Manufactorer</h4>
-          <mat-form-field>
-            <mat-select formControlName="manufactorer" [ngClass]="{ 'is-invalid': (spf.manufactorer.touched && spf.manufactorer.errors) || (submitted && spf.manufactorer.errors) }">
-              <mat-option *ngFor="let man of manufactorers" [value]="man">{{man}}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="(spf.manufactorer.touched && spf.manufactorer.errors) || (submitted && spf.manufactorer.errors)" class="invalid-feedback">
-              <div class="error-font" *ngIf="spf.manufactorer.errors?.required">Manufactorer is required</div>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="form-group">
-          <h4 class="gray">Minimum price <b class="price">{{spf.priceMin.value}}</b></h4>
-          <mat-slider class="wide" thumbLabel min="0" max="100" step="10" formControlName="priceMin"></mat-slider>
-        </div>
-        <div class="form-group">
-          <h4 class="gray">Maximum price <b class="price">{{spf.priceMax.value}}</b></h4>
-          <mat-slider class="wide" thumbLabel min="200" max="1000" step="50" formControlName="priceMax"></mat-slider>
-        </div>
-        <div class="form-group">
-          <h4 class="gray">Minimum warranty in months</h4>
-          <mat-form-field>
-            <input matInput type="number" min="0" max="12" step="1" formControlName="warrantyInMonthsMin">
-          </mat-form-field>
-        </div>
-        <div class="form-group">
-          <h4 class="gray">Maximum warranty in months</h4>
-          <mat-form-field>
-            <input matInput type="number" min="24" max="60" step="2" formControlName="warrantyInMonthsMax">
-          </mat-form-field>
-        </div>
-        <div class="form-group">
-          <mat-checkbox formControlName="includeUserPreferences">Include my preferences</mat-checkbox>
-        </div>
-        <button mat-stroked-button color="primary">Submit</button>
-      </form>
-    </div>
-    <div class="col col-lg-3">
-      <app-alert></app-alert>
-    </div>
-  </div>
-</div>
+<!--End Home-->
+<router-outlet></router-outlet>
