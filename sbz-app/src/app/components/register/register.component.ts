@@ -4,6 +4,7 @@ import { RegisterService } from '../../services/register.service';
 import { AlertService } from '../../services/alert.service';
 import { Router } from '@angular/router';
 import { PasswordValidator } from '../../validators/password-validator';
+import { ConfirmValidParentMatcher } from '../../validators/confirm-valid-parent-matcher';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { PasswordValidator } from '../../validators/password-validator';
 })
 export class RegisterComponent implements OnInit {
 
+  private confirmValidParentMatcher = new ConfirmValidParentMatcher();
   private registerForm: FormGroup;
   private submitted: boolean;
 

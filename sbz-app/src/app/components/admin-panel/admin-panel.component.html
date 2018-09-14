@@ -5,10 +5,12 @@
     </div>
 </div>
 <br />
-<div class="row center">    
+<div class="row center">
     <div class="col">
         <button class="btn btn-default font-btn" title="Add new product" (click)="smartModalService.getModal('productModal').open()">
-            <span class="hover-blue"><fa name="fas fa-plus-square fa-3x" aria-hidden="true"></fa></span>
+            <span class="hover-blue">
+                <fa name="fas fa-plus-square fa-3x" aria-hidden="true"></fa>
+            </span>
         </button>
     </div>
 </div>
@@ -16,8 +18,8 @@
     <div class="col col-lg-2"></div>
     <div class="col col-lg-8">
         <div class="div-rel">
-        <br />
-            <div class="row" *ngFor = "let dispProd of products">
+            <br />
+            <div class="row" *ngFor="let dispProd of products">
                 <div class="col col-lg-12 jumbotron div-jumbo">
                     <div class="row">
                         <div class="col col-lg-3">
@@ -39,8 +41,10 @@
                             <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
                         </div>
                         <div class="col col-lg-3 center">
-                            <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)" >
-                                <span class="hover-blue"><fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa></span>
+                            <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)">
+                                <span class="hover-blue">
+                                    <fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa>
+                                </span>
                             </button>
                             <div class="row">
                                 &nbsp;
@@ -48,8 +52,10 @@
                             <div class="row">
                                 &nbsp;
                             </div>
-                            <button class="btn btn-default font-btn" title="Delete product" (click)="deleteProduct(dispProd.product.id)" >
-                                <span class="hover-gray"><fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa></span>
+                            <button class="btn btn-default font-btn" title="Delete product" (click)="deleteProduct(dispProd.product.id)">
+                                <span class="hover-gray">
+                                    <fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa>
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -64,78 +70,87 @@
 </div>
 
 <!-- Modal -->
-<ngx-smart-modal #productModal identifier="productModal" [closable]="false" [escapable]="false">
+<ngx-smart-modal #productModal identifier="productModal" [closable]="false" [escapable]="false" [dismissable]="false">
     <span *ngIf="!editing">
         <h2 class="title">Add product</h2>
     </span>
     <span *ngIf="editing">
         <h2 class="title">Edit product</h2>
     </span>
-    <form [formGroup] = "productForm" (ngSubmit) = "postForm(productForm.value)">
+    <form [formGroup]="productForm" (ngSubmit)="postForm(productForm.value)">
         <div class="form-group">
             <input type="hidden" formControlName="id" class="form-control">
         </div>
         <div class="form-group">
-            <input type="text" formControlName="type" class="form-control" placeholder="Type"
-            [ngClass]="{ 'is-invalid': (f.type.touched && f.type.errors) || (submitted && f.type.errors) }">
-            <div *ngIf="(f.type.touched && f.type.errors) || (submitted && f.type.errors)" class="invalid-feedback">
-                <div *ngIf="f.type.errors?.required">Type is required</div>
-                <div *ngIf="f.type.errors?.minlength">Minimum length is 4 characters</div>
-                <div *ngIf="f.type.errors?.maxlength">Maximum length is 50 characters</div>
-            </div>
+            <mat-form-field class="wide">
+                <input matInput type="text" formControlName="type" placeholder="Type">
+                <mat-error *ngIf="(f.type.touched && f.type.errors) || (submitted && f.type.errors)" class="invalid-feedback">
+                    <div class="error-font" *ngIf="f.type.errors?.required">Type is required</div>
+                    <div class="error-font" *ngIf="f.type.errors?.minlength">Minimum length is 4 characters</div>
+                    <div class="error-font" *ngIf="f.type.errors?.maxlength">Maximum length is 50 characters</div>
+                </mat-error>
+            </mat-form-field>
         </div>
         <div class="form-group">
-            <input type="text" formControlName="manufactorer" class="form-control" placeholder="Manufactorer"
-            [ngClass]="{ 'is-invalid': (f.manufactorer.touched && f.manufactorer.errors) || (submitted && f.manufactorer.errors) }" >
-            <div *ngIf="(f.manufactorer.touched && f.manufactorer.errors) || (submitted && f.manufactorer.errors)" class="invalid-feedback">
-                <div *ngIf="f.manufactorer.errors?.required">Manufactorer is required</div>
-                <div *ngIf="f.manufactorer.errors?.minlength">Minimum length is 2 characters</div>
-                <div *ngIf="f.manufactorer.errors?.maxlength">Maximum length is 50 characters</div>
-            </div>
+            <mat-form-field class="wide">
+                <input matInput type="text" formControlName="manufactorer" placeholder="Manufactorer">
+                <mat-error *ngIf="(f.manufactorer.touched && f.manufactorer.errors) || (submitted && f.manufactorer.errors)"
+                    class="invalid-feedback">
+                    <div class="error-font" *ngIf="f.manufactorer.errors?.required">Manufactorer is required</div>
+                    <div class="error-font" *ngIf="f.manufactorer.errors?.minlength">Minimum length is 2 characters</div>
+                    <div class="error-font" *ngIf="f.manufactorer.errors?.maxlength">Maximum length is 50 characters</div>
+                </mat-error>
+            </mat-form-field>
         </div>
         <div class="form-group">
-            <textarea formControlName="description" class="form-control" placeholder="Description"
-            [ngClass]="{ 'is-invalid': (f.description.touched && f.description.errors) || (submitted && f.description.errors) }" ></textarea>
-            <div *ngIf="(f.description.touched && f.description.errors) || (submitted && f.description.errors)" class="invalid-feedback">
-                <div *ngIf="f.description.errors?.maxlength">Maximum length is 300 characters</div>
-            </div>
+            <mat-form-field class="wide">
+                <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                <mat-error *ngIf="(f.description.touched && f.description.errors) || (submitted && f.description.errors)"
+                    class="invalid-feedback">
+                    <div class="error-font" *ngIf="f.description.errors?.maxlength">Maximum length is 300 characters</div>
+                </mat-error>
+            </mat-form-field>
         </div>
         <div class="form-group">
-            <input type="text" formControlName="price" class="form-control" placeholder="Price"
-            [ngClass]="{ 'is-invalid': (f.price.touched && f.price.errors) || (submitted && f.price.errors) }" >
-            <div *ngIf="(f.price.touched && f.price.errors) || (submitted && f.price.errors)" class="invalid-feedback">
-                <div *ngIf="f.price.errors?.required">Price is required</div>
-                <div *ngIf="f.price.errors?.min">Minimum value is 0</div>
-                <div *ngIf="f.price.errors?.pattern">Invalid value</div>
-            </div>
+            <mat-form-field class="wide">
+                <input matInput type="text" formControlName="price" placeholder="Price">
+                <mat-error *ngIf="(f.price.touched && f.price.errors) || (submitted && f.price.errors)" class="invalid-feedback">
+                    <div class="error-font" *ngIf="f.price.errors?.required">Price is required</div>
+                    <div class="error-font" *ngIf="f.price.errors?.min">Minimum value is 0</div>
+                    <div class="error-font" *ngIf="f.price.errors?.pattern">Invalid value</div>
+                </mat-error>
+            </mat-form-field>
         </div>
         <div class="form-group">
-            <input type="text" formControlName="warrantyInMonths" class="form-control" placeholder="Warranty in months"
-            [ngClass]="{ 'is-invalid': (f.warrantyInMonths.touched && f.warrantyInMonths.errors) || (submitted && f.warrantyInMonths.errors) }" >
-            <div *ngIf="(f.warrantyInMonths.touched && f.warrantyInMonths.errors) || (submitted && f.warrantyInMonths.errors)" class="invalid-feedback">
-                <div *ngIf="f.warrantyInMonths.errors?.required">Warranty in months is required</div>
-                <div *ngIf="f.warrantyInMonths.errors?.min">Minimum value is 0</div>
-                <div *ngIf="f.warrantyInMonths.errors?.pattern">Invalid value</div>
-            </div>
+            <h4 class="gray">Warranty in months <b class="price">{{f.warrantyInMonths.value}}</b></h4>
+            <mat-slider class="wide" thumbLabel min="0" max="60" step="1" formControlName="warrantyInMonths"></mat-slider>
+            <mat-error *ngIf="(f.warrantyInMonths.touched && f.warrantyInMonths.errors) || (submitted && f.warrantyInMonths.errors)"
+                class="invalid-feedback">
+                <div class="error-font" *ngIf="f.warrantyInMonths.errors?.required">Warranty in months is required</div>
+            </mat-error>
         </div>
-        <div *ngIf="editing" class="form-check">
-            <input type="checkbox" class="form-check-input" id="checkbox1" (change)="editImage($event)">
-            <label class="form-check-label" for="checkbox1">Replace image</label>
-            &nbsp;
+        <div *ngIf="editing" >
+            <mat-checkbox [checked]="editingImage" (change)="editImage()">
+                Replace image
+            </mat-checkbox>
         </div>
         <span *ngIf="!editing || (editing && editingImage)">
-            <input #imageInput type="file" accept="image/*" class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && !isFileAttached }" (change)="onFileChange($event)">
-            <div *ngIf="submitted && !isFileAttached" class="invalid-feedback">
-                <div *ngIf="submitted && !isFileAttached">Image is required</div>
+            <div *ngIf="editingImage" class="row">
+                &nbsp;
             </div>
+            <input #imageInput type="file" accept="image/*" (change)="onFileChange($event)">
+            <mat-error *ngIf="submitted && !isFileAttached" class="invalid-feedback">
+                <div *ngIf="submitted && !isFileAttached">Image is required</div>
+            </mat-error>
         </span>
         <div class="row">
             &nbsp;
         </div>
-        <input type="submit" class="btn btn-success" name="addProductBtn" value="Submit" >
+        <button mat-raised-button color="primary" class="wide">Submit</button>
     </form>
     <button aria-label="Close" class="nsm-dialog-btn-close" type="button" (click)="closeModal()">
-        <span class="hover-gray"><fa name="fas fa-times fa-2x" aria-hidden="true"></fa></span>
+        <span class="hover-gray">
+            <fa name="fas fa-times fa-2x" aria-hidden="true"></fa>
+        </span>
     </button>
 </ngx-smart-modal>

@@ -48,6 +48,7 @@ export class AdminPanelComponent implements OnInit {
           }
         });
         this.buildForm();
+        this.editingImage = false;
       } else {
         this.router.navigate(['']);
         this.alertService.error('You are not authorezed for this page');
@@ -64,8 +65,8 @@ export class AdminPanelComponent implements OnInit {
       type: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(300)]],
-      price: ['', [Validators.required, Validators.min(0), Validators.pattern('((0|([1-9]\d*)){1,10})(\.\d{1,4})?')]],
-      warrantyInMonths: ['', [Validators.required, Validators.min(0), Validators.pattern('(0|[1-9][0-9]*)')]],
+      price: ['', [Validators.required, Validators.min(0), Validators.pattern(/^((0|([1-9]\d*)){1,10})(\.\d{1,4})?$/)]],
+      warrantyInMonths: ['', [Validators.required]],
     });
   }
 
@@ -142,8 +143,8 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  editImage(event) {
-    if (event.target.checked) {
+  editImage() {
+    if (this.editingImage === false) {
       this.editingImage = true;
     } else {
       this.editingImage = false;

@@ -58,11 +58,8 @@ export class CrudService {
     return this.httpClient.get('api/rest/secured/admin/deleteProduct', {params: params, headers: this.setHeaders(null)});
   }
 
-  setShoppingAgenda(agenda: string) {
-    let params = new HttpParams();
-    params = params.append('agenda', agenda);
-
-    return this.httpClient.get('api/rest/secured/web-shop/setAgenda', {params: params, headers: this.setHeaders(null)});
+  getProductParams() {
+    return this.httpClient.get('api/rest/secured/web-shop/getProductParams', {headers: this.setHeaders(null)});
   }
 
   findSingleProduct(product) {

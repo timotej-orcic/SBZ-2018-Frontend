@@ -11,3 +11,11 @@
 .center {
     text-align: center;
 }
+
+.marginTop {
+    margin-top: 5%;
+}
+
+.maxWidth {
+    max-width: 100%;
+}

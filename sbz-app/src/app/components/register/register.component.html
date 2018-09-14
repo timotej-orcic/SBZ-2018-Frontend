@@ -4,74 +4,82 @@
   </div>
 </div>
 <div class="row">
-  <div class="col col-lg-2"></div>
-  <div class="col col-lg-8">
+  <div class="col col-lg-3"></div>
+  <div class="col col-lg-6">
     <div class="container" id="container1">
-      <form [formGroup]="registerForm" (ngSubmit) = register(registerForm.value)>
+      <form [formGroup]="registerForm" (ngSubmit)=register(registerForm.value)>
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <input type="text" formControlName="firstname" class="form-control" placeholder="Firstname"
-              [ngClass]="{ 'is-invalid': (f.firstname.touched && f.firstname.errors) || (submitted && f.firstname.errors) }">
-              <div *ngIf="(f.firstname.touched && f.firstname.errors) || (submitted && f.firstname.errors)" class="invalid-feedback">
-                <div *ngIf="f.firstname.errors?.required">Firstname is required</div>
-                <div *ngIf="f.firstname.errors?.minlength">Minimum length is 2 characters</div>
-                <div *ngIf="f.firstname.errors?.maxlength">Maximum length is 50 characters</div>
-                <div *ngIf="f.firstname.errors?.pattern">Invalid firstname</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="text" formControlName="firstname" placeholder="Firstname">
+                <mat-error *ngIf="(f.firstname.touched && f.firstname.errors) || (submitted && f.firstname.errors)"
+                  class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.firstname.errors?.required">Firstname is required</div>
+                  <div class="error-font" *ngIf="f.firstname.errors?.minlength">Minimum length is 2 characters</div>
+                  <div class="error-font" *ngIf="f.firstname.errors?.maxlength">Maximum length is 50 characters</div>
+                  <div class="error-font" *ngIf="f.firstname.errors?.pattern">Invalid firstname</div>
+                </mat-error>
+              </mat-form-field>
             </div>
             <div class="form-group">
-              <input type="text" formControlName="lastname" class="form-control" placeholder="Lastname"
-              [ngClass]="{ 'is-invalid': (f.lastname.touched && f.lastname.errors) || (submitted && f.lastname.errors) }">
-              <div *ngIf="(f.lastname.touched && f.lastname.errors) || (submitted && f.lastname.errors)" class="invalid-feedback">
-                <div *ngIf="f.lastname.errors?.required">Lastname is required</div>
-                <div *ngIf="f.lastname.errors?.minlength">Minimum length is 2 characters</div>
-                <div *ngIf="f.lastname.errors?.maxlength">Maximum length is 50 characters</div>
-                <div *ngIf="f.lastname.errors?.pattern">Invalid lastname</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="text" formControlName="lastname" placeholder="Lastname">
+                <mat-error *ngIf="(f.lastname.touched && f.lastname.errors) || (submitted && f.lastname.errors)" class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.lastname.errors?.required">Lastname is required</div>
+                  <div class="error-font" *ngIf="f.lastname.errors?.minlength">Minimum length is 2 characters</div>
+                  <div class="error-font" *ngIf="f.lastname.errors?.maxlength">Maximum length is 50 characters</div>
+                  <div class="error-font" *ngIf="f.lastname.errors?.pattern">Invalid lastname</div>
+                </mat-error>
+              </mat-form-field>
             </div>
             <div class="form-group">
-              <input type="email" formControlName="email" class="form-control" placeholder="Email"
-              [ngClass]="{ 'is-invalid': (f.email.touched && f.email.errors) || (submitted && f.email.errors) }">
-              <div *ngIf="(f.email.touched && f.email.errors) || (submitted && f.email.errors)" class="invalid-feedback">
-                <div *ngIf="f.email.errors?.required">Email is required</div>
-                <div *ngIf="f.email.errors?.maxlength">Maximum length is 80 characters</div>
-                <div *ngIf="f.email.errors?.email">Invalid email</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="email" formControlName="email" placeholder="Email">
+                <mat-error *ngIf="(f.email.touched && f.email.errors) || (submitted && f.email.errors)" class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.email.errors?.required">Email is required</div>
+                  <div class="error-font" *ngIf="f.email.errors?.maxlength">Maximum length is 80 characters</div>
+                  <div class="error-font" *ngIf="f.email.errors?.email">Invalid email</div>
+                </mat-error>
+              </mat-form-field>
             </div>
             <div class="form-group">
-              <input type="text" formControlName="username" class="form-control" placeholder="Username"
-              [ngClass]="{ 'is-invalid': (f.username.touched && f.username.errors) || (submitted && f.username.errors) }">
-              <div *ngIf="(f.username.touched && f.username.errors) || (submitted && f.username.errors)" class="invalid-feedback">
-                <div *ngIf="f.username.errors?.required">Username is required</div>
-                <div *ngIf="f.username.errors?.minlength">Minimum length is 4 characters</div>
-                <div *ngIf="f.username.errors?.maxlength">Maximum length is 20 characters</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="text" formControlName="username" placeholder="Username">
+                <mat-error *ngIf="(f.username.touched && f.username.errors) || (submitted && f.username.errors)" class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.username.errors?.required">Username is required</div>
+                  <div class="error-font" *ngIf="f.username.errors?.minlength">Minimum length is 4 characters</div>
+                  <div class="error-font" *ngIf="f.username.errors?.maxlength">Maximum length is 20 characters</div>
+                </mat-error>
+              </mat-form-field>
             </div>
             <div class="form-group">
-              <input type="password" formControlName="password" class="form-control" placeholder="Password"
-                [ngClass]="{ 'is-invalid': (f.password.touched && f.password.errors) || (submitted && f.password.errors) }">
-              <div *ngIf="(f.password.touched && f.password.errors) || (submitted && f.password.errors)" class="invalid-feedback">
-                <div *ngIf="f.password.errors?.required">Password is required</div>
-                <div *ngIf="f.password.errors?.minlength">Minimum length is 8 characters</div>
-                <div *ngIf="f.password.errors?.maxlength">Maximum length is 20 characters</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="password" formControlName="password" placeholder="Password">
+                <mat-error *ngIf="(f.password.touched && f.password.errors) || (submitted && f.password.errors)" class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.password.errors?.required">Password is required</div>
+                  <div class="error-font" *ngIf="f.password.errors?.minlength">Minimum length is 8 characters</div>
+                  <div class="error-font" *ngIf="f.password.errors?.maxlength">Maximum length is 20 characters</div>
+                </mat-error>
+              </mat-form-field>
             </div>
             <div class="form-group">
-              <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm password"
-                [ngClass]="{ 'is-invalid': (f.confirmPassword.touched && f.confirmPassword.errors) || (submitted && f.confirmPassword.errors) || registerForm.errors?.doesNotMatchPassword }">
-              <div *ngIf="(f.confirmPassword.touched && f.confirmPassword.errors) || (submitted && f.confirmPassword.errors) || registerForm.errors?.doesNotMatchPassword" class="invalid-feedback">
-                <div *ngIf="f.confirmPassword.errors?.required">Confirm password is required</div>
-                <div *ngIf="registerForm.errors?.doesNotMatchPassword">Passwords do not match</div>
-              </div>
+              <mat-form-field class="wide">
+                <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm password" [errorStateMatcher]="confirmValidParentMatcher">
+                <mat-error *ngIf="(f.confirmPassword.touched && f.confirmPassword.errors) || (submitted && f.confirmPassword.errors) || registerForm.errors?.doesNotMatchPassword"
+                  class="invalid-feedback">
+                  <div class="error-font" *ngIf="f.confirmPassword.errors?.required">Confirm password is required</div>
+                  <div class="error-font" *ngIf="registerForm.errors?.doesNotMatchPassword">Passwords do not match</div>
+                </mat-error>
+              </mat-form-field>
             </div>
-            <input type="submit" value="Submit">
+            <button mat-raised-button color="primary" class="wide">Submit</button>
           </div>
         </div>
       </form>
     </div>
   </div>
-  <div class="col col-lg-2">
+  <div class="col col-lg-3">
     <app-alert></app-alert>
   </div>
 </div>

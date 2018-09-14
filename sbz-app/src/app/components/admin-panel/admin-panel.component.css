@@ -12,6 +12,12 @@
     color: #1E88E5;
 }
 
+.price {
+    font-weight: 800;
+    color: #ffc107;
+    float: right; 
+}
+
 .div-rel {
     position: relative;
 }
@@ -52,4 +58,12 @@
 
 .invalid-feedback {
     color: #C62828;
+}
+
+.wide {
+    width: -webkit-fill-available;
+}
+
+.error-font {
+    font-size: 12px;
 }

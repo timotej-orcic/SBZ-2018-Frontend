@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CrudService } from '../../services/crud.service';
 import { AlertService } from '../../services/alert.service';
 import { Router } from '@angular/router';
@@ -16,11 +16,13 @@ export class SingleProductComponent implements OnInit {
 
   private submitted: boolean;
   private singleProductForm: FormGroup;
+  @Input()selectedTabIndex: number;
   private productTypes = [];
   private manufactorers = [];
   private foundProducts = [];
   private hasFoundProducts: boolean;
   private singleProductsCart = [];
+  private singlePrCartPriceSum: number;
 
   constructor(private crudService: CrudService, private alertService: AlertService,
     private router: Router, private formBuilder: FormBuilder) { }
@@ -34,13 +36,15 @@ export class SingleProductComponent implements OnInit {
       warrantyInMonthsMin: [''],
       includeUserPreferences: ['']
     });
-    this.setAgenda();
+    this.selectedTabIndex = 0;
+    this.singlePrCartPriceSum = 0.0;
+    this.getParams();
   }
 
   get spf () { return this.singleProductForm.controls; }
 
-  setAgenda() {
-    this.crudService.setShoppingAgenda('singleProduct').subscribe((res: any) => {
+  getParams() {
+    this.crudService.getProductParams().subscribe((res: any) => {
       if (res.success) {
         this.productTypes = res.payload[0];
         this.manufactorers = res.payload[1];
@@ -57,6 +61,8 @@ export class SingleProductComponent implements OnInit {
       return;
     }
 
+    this.foundProducts = [];
+
     this.crudService.findSingleProduct(product).subscribe((res: any) => {
       if (res.success) {
         this.alertService.success(res.message);
@@ -68,6 +74,7 @@ export class SingleProductComponent implements OnInit {
           this.foundProducts.push(new DisplayProduct(resProduct, resFile));
         });
         this.hasFoundProducts = true;
+        this.selectedTabIndex = 1;
       } else {
         this.alertService.error(res.message);
       }
@@ -75,6 +82,10 @@ export class SingleProductComponent implements OnInit {
   }
 
   addProductToCart(id: number) {
-    this.singleProductsCart.push(id);
+    const product = this.foundProducts.find(dp => dp.product.id === id);
+    if (product != null) {
+      this.singleProductsCart.push(product);
+      this.singlePrCartPriceSum += product.price;
+    }
   }
 }
