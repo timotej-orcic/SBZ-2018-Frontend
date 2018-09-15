@@ -5,7 +5,7 @@ import { AlertService } from '../../services/alert.service';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Product } from '../../models/product';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormGroupDirective } from '@angular/forms';
 import { DisplayFile } from '../../models/display-file';
 import { DisplayProduct } from '../../models/display-product';
 import { ViewChild, ElementRef } from '@angular/core';
@@ -24,8 +24,8 @@ export class AdminPanelComponent implements OnInit {
   private editingImage: boolean;
   private isFileAttached: boolean;
   private fileSelected: File;
-  @ViewChild('imageInput')
-  myInputVariable: ElementRef;
+  @ViewChild('imageInput') myInputVariable: ElementRef;
+  @ViewChild(FormGroupDirective) myForm;
 
   constructor(private smartModalService: NgxSmartModalService, private crudService: CrudService,
     private router: Router, private alertService: AlertService, private formBuilder: FormBuilder) { }
@@ -163,7 +163,8 @@ export class AdminPanelComponent implements OnInit {
       if (this.myInputVariable != null) {
         this.myInputVariable.nativeElement.value = '';
       }
-      this.buildForm();
+      this.myForm.resetForm();
+      // this.buildForm();
     }, 500);
   }
 
