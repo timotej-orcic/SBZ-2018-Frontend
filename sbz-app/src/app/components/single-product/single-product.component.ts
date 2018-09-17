@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Product } from '../../models/product';
 import { DisplayFile } from '../../models/display-file';
 import { DisplayProduct } from '../../models/display-product';
+import { CartDisplayProduct } from '../../models/cart-display-product';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -68,7 +69,7 @@ export class SingleProductComponent implements OnInit {
         this.alertService.success(res.message);
         res.payload.forEach(element => {
           const resProduct = new Product(element.id, element.type, element.manufactorer,
-            element.description, element.price, element.warrantyInMonths);
+            element.description, element.price, element.warrantyInMonths, element.lagerQuantity);
           const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
             element.base64Image.type, element.base64Image.imageBytes);
           this.foundProducts.push(new DisplayProduct(resProduct, resFile));
@@ -81,11 +82,57 @@ export class SingleProductComponent implements OnInit {
     });
   }
 
-  addProductToCart(id: number) {
-    const product = this.foundProducts.find(dp => dp.product.id === id);
-    if (product != null) {
-      this.singleProductsCart.push(product);
-      this.singlePrCartPriceSum += product.price;
+  addToCart(item: DisplayProduct) {
+    const query = this.singleProductsCart.find(i => i.displayProduct.product.id === item.product.id);
+    if (query != null) {
+      this.alertService.warning('Item already in cart. Go to the carts tab to increase quantity');
+    } else {
+      const cartItem = new CartDisplayProduct(item, 1);
+      this.singleProductsCart.push(cartItem);
+      this.calculateCartPrice();
+      this.alertService.success('Succesfully added to cart');
     }
+  }
+
+  calculateCartPrice() {
+    this.singlePrCartPriceSum = 0;
+    this.singleProductsCart.forEach(i => {
+      this.singlePrCartPriceSum += i.displayProduct.product.price * i.quantity;
+    });
+  }
+
+  updateQuantity(id: number, event) {
+    const item = this.singleProductsCart.find(i => i.displayProduct.product.id === id);
+    item.quantity = event.value;
+    this.calculateCartPrice();
+  }
+
+  removeFromCart(item: CartDisplayProduct) {
+    const index: number = this.singleProductsCart.indexOf(item);
+    let removed = false;
+    if (index !== -1) {
+      this.singleProductsCart.splice(index, 1);
+      removed = true;
+    }
+
+    if (removed) {
+      this.alertService.success('Removed from cart');
+      this.calculateCartPrice();
+    } else {
+      this.alertService.error('Please try again');
+    }
+  }
+
+  checkout() {
+    this.crudService.shop(this.singleProductsCart).subscribe((res: any) => {
+      if (res.success) {
+        this.alertService.success('Shopping successfull');
+        setTimeout(() => {
+          this.router.navigate(['web-shop']);
+        }, 1000);
+      } else {
+        this.alertService.error(res.message);
+      }
+    });
   }
 }

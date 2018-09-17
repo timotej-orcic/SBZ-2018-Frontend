@@ -65,4 +65,20 @@ export class CrudService {
   findSingleProduct(product) {
     return this.httpClient.post('/api/rest/secured/web-shop/findSingleProduct', product, {headers : this.setHeaders(null)});
   }
+
+  shop(shoppingCart) {
+    const payload = [];
+    shoppingCart.forEach(element => {
+      const item = {
+        productId: 0,
+        quantity: 0,
+        price: 0
+      };
+      item.productId = element.displayProduct.product.id;
+      item.quantity = element.quantity;
+      item.price = element.displayProduct.product.price * element.quantity;
+      payload.push(item);
+    });
+    return this.httpClient.post('/api/rest/secured/web-shop/shop', payload, {headers : this.setHeaders(null)});
+  }
 }

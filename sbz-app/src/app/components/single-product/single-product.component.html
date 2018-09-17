@@ -85,6 +85,12 @@
                       <div class="col col-lg-3">
                         <h3 class="gray">{{dispProd.product.type}}</h3>
                         <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <div class="row">
+                          &nbsp;
+                        </div>
                         <img [src]="dispProd.image.src" height="128" width="128">
                       </div>
                       <div class="col col-lg-4">
@@ -94,20 +100,20 @@
                       <div class="col col-lg-2">
                         <h4 class="gray center">Price</h4>
                         <h4 class="blue center">{{dispProd.product.price}}</h4>
-                        <div class="row">
-                          &nbsp;
-                        </div>
-                        <h4 class="gray center">Warranty in months</h4>
-                        <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
                       </div>
                       <div class="col col-lg-3 center">
+                        <h4 class="gray center">Warranty in months</h4>
+                        <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
                         <div class="row">
                           &nbsp;
                         </div>
                         <div class="row">
                           &nbsp;
                         </div>
-                        <button class="btn btn-default font-btn" title="Add to cart" (click)="addProductToCart(dispProd.product.id)">
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <button class="btn btn-default font-btn" title="Add to cart" (click)="addToCart(dispProd)">
                           <span class="hover-gray">
                             <fa name="fas fa-cart-plus fa-3x" aria-hidden="true"></fa>
                           </span>
@@ -135,6 +141,67 @@
             <div class="col">
               <h1 class="title">My cart</h1>
             </div>
+          </div>
+          <div class="row">
+            <div class="col col-lg-2"></div>
+            <div class="col col-lg-8">
+              <div class="div-rel">
+                <br />
+                <div class="row" *ngFor="let item of singleProductsCart">
+                  <div class="col col-lg-12 jumbotron div-jumbo">
+                    <div class="row">
+                      <div class="col col-lg-3">
+                        <h3 class="gray">{{item.displayProduct.product.type}}</h3>
+                        <h3 class="blue"><span class="gray">by</span> {{item.displayProduct.product.manufactorer}}</h3>
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <img [src]="item.displayProduct.image.src" height="128" width="128">
+                      </div>
+                      <div class="col col-lg-4">
+                        <h3 class="gray center">Description</h3>
+                        <p class="center">{{item.displayProduct.product.description}}</p>
+                      </div>
+                      <div class="col col-lg-2">
+                        <h4 class="gray center">Price</h4>
+                        <h4 class="blue center">{{item.displayProduct.product.price}}</h4>
+                      </div>
+                      <div class="col col-lg-3 center">
+                        <h4 class="gray center">Warranty in months</h4>
+                        <h4 class="blue center">{{item.displayProduct.product.warrantyInMonths}}</h4>
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <div class="row">
+                          <h4 class="gray center wide">Quantity <b class="price">{{item.quantity}}</b></h4>
+                          <mat-slider class="wide" thumbLabel min="1" max="{{item.displayProduct.product.lagerQuantity}}"
+                            (change)="updateQuantity(item.displayProduct.product.id, $event)"></mat-slider>
+                        </div>
+                        <div class="row">
+                          &nbsp;
+                        </div>
+                        <button class="btn btn-default font-btn floatRight" title="Remove from cart" (click)="removeFromCart(item)">
+                          <span class="hover-gray">
+                            <fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  &nbsp;
+                </div>
+                <button *ngIf="singleProductsCart.length > 0" class="btn btn-default font-btn floatRight" title="Checkout"
+                  (click)="checkout()">
+                  <span class="hover-gray">
+                    <fa name="fas fa-credit-card fa-3x" aria-hidden="true"></fa>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div class="col col-lg-2"></div>
           </div>
         </mat-tab>
       </mat-tab-group>

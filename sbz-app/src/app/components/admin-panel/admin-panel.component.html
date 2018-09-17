@@ -25,6 +25,12 @@
                         <div class="col col-lg-3">
                             <h3 class="gray">{{dispProd.product.type}}</h3>
                             <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <div class="row">
+                                &nbsp;
+                            </div>
                             <img [src]="dispProd.image.src" height="128" width="128">
                         </div>
                         <div class="col col-lg-4">
@@ -39,6 +45,11 @@
                             </div>
                             <h4 class="gray center">Warranty in months</h4>
                             <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <h4 class="gray center">Lager quantity</h4>
+                            <h4 class="blue center">{{dispProd.product.lagerQuantity}}</h4>
                         </div>
                         <div class="col col-lg-3 center">
                             <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)">
@@ -46,6 +57,9 @@
                                     <fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa>
                                 </span>
                             </button>
+                            <div class="row">
+                                &nbsp;
+                            </div>
                             <div class="row">
                                 &nbsp;
                             </div>
@@ -127,6 +141,14 @@
             <mat-error *ngIf="(f.warrantyInMonths.touched && f.warrantyInMonths.errors) || (submitted && f.warrantyInMonths.errors)"
                 class="invalid-feedback">
                 <div class="error-font" *ngIf="f.warrantyInMonths.errors?.required">Warranty in months is required</div>
+            </mat-error>
+        </div>
+        <div class="form-group">
+            <h4 class="gray">Lager quantity</h4>
+            <mat-slider class="wide" thumbLabel min="0" max="200" step="1" formControlName="lagerQuantity"></mat-slider>
+            <mat-error *ngIf="(f.lagerQuantity.touched && f.lagerQuantity.errors) || (submitted && f.lagerQuantity.errors)"
+                class="invalid-feedback">
+                <div class="error-font" *ngIf="f.lagerQuantity.errors?.required">Lager quantity is required</div>
             </mat-error>
         </div>
         <div *ngIf="editing" >

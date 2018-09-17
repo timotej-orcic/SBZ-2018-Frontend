@@ -40,7 +40,7 @@ export class AdminPanelComponent implements OnInit {
           if (res.success) {
             res.payload.forEach(element => {
               const resProduct = new Product(element.id, element.type, element.manufactorer,
-                element.description, element.price, element.warrantyInMonths);
+                element.description, element.price, element.warrantyInMonths, element.lagerQuantity);
               const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
                 element.base64Image.type, element.base64Image.imageBytes);
               this.products.push(new DisplayProduct(resProduct, resFile));
@@ -67,6 +67,7 @@ export class AdminPanelComponent implements OnInit {
       description: ['', [Validators.maxLength(300)]],
       price: ['', [Validators.required, Validators.min(0), Validators.pattern(/^((0|([1-9]\d*)){1,10})(\.\d{1,4})?$/)]],
       warrantyInMonths: ['', [Validators.required]],
+      lagerQuantity: ['', Validators.required]
     });
   }
 
@@ -113,7 +114,7 @@ export class AdminPanelComponent implements OnInit {
         if (res.success) {
           this.alertService.success(res.message);
           const resProduct = new Product(res.payload.id, res.payload.type, res.payload.manufactorer,
-            res.payload.description, res.payload.price, res.payload.warrantyInMonths);
+            res.payload.description, res.payload.price, res.payload.warrantyInMonths, res.payload.lagerQuantity);
           const resFile = new DisplayFile(res.payload.base64Image.id, res.payload.base64Image.name,
             res.payload.base64Image.type, res.payload.base64Image.imageBytes);
           this.products.push(new DisplayProduct(resProduct, resFile));
@@ -164,7 +165,6 @@ export class AdminPanelComponent implements OnInit {
         this.myInputVariable.nativeElement.value = '';
       }
       this.myForm.resetForm();
-      // this.buildForm();
     }, 500);
   }
 
