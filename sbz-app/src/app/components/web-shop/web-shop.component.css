@@ -12,8 +12,20 @@
     text-align: center;
 }
 
+.h4-font {
+    font-size: 20px;
+}
+
+.floatNone {
+    float: none !important;
+}
+
 .marginTop {
     margin-top: 5%;
+}
+
+.marginAuto {
+    margin: auto;
 }
 
 .maxWidth {
@@ -67,6 +79,7 @@
 .div-jumbo {
     background-color:rgba(245,245,245, 0.6);
     margin: 0 auto;
+    padding: 2rem 1rem;
 }
 
 .blue {
@@ -85,12 +98,20 @@
     margin-left: 10px; 
 }
 
+.topMarginSmall {
+    margin-top: 15px;
+}
+
 .price-color {
     color: #ffc107;
 }
 
 .floatRight {
     float: right;
+}
+
+.pag {
+    background-color:rgba(245,245,245, 0.8);
 }
 
 /deep/ .mat-slide-toggle-bar {

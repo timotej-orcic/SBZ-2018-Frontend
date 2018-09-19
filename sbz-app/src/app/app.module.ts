@@ -14,7 +14,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-  MatCheckboxModule, MatButtonModule, MatTabsModule, MatSlideToggleModule } from '@angular/material';
+  MatCheckboxModule, MatButtonModule, MatTabsModule, MatSlideToggleModule,
+    MatRadioModule, MatPaginatorModule, MatTableModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,10 @@ import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatCheckboxModule,
     MatButtonModule,
     MatTabsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

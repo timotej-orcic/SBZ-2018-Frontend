@@ -43,7 +43,7 @@ export class AdminPanelComponent implements OnInit {
                 element.description, element.price, element.warrantyInMonths, element.lagerQuantity);
               const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
                 element.base64Image.type, element.base64Image.imageBytes);
-              this.products.push(new DisplayProduct(resProduct, resFile, null));
+              this.products.push(new DisplayProduct(resProduct, resFile));
             });
           }
         });
@@ -117,7 +117,7 @@ export class AdminPanelComponent implements OnInit {
             res.payload.description, res.payload.price, res.payload.warrantyInMonths, res.payload.lagerQuantity);
           const resFile = new DisplayFile(res.payload.base64Image.id, res.payload.base64Image.name,
             res.payload.base64Image.type, res.payload.base64Image.imageBytes);
-          this.products.push(new DisplayProduct(resProduct, resFile, null));
+          this.products.push(new DisplayProduct(resProduct, resFile));
         } else {
           this.alertService.error(res.message);
         }

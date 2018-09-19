@@ -35,9 +35,8 @@
             <div class="col col-lg-6">
               <form [formGroup]="singleProductForm" (ngSubmit)="findSingleProduct(singleProductForm.value)">
                 <div class="form-group">
-                  <h4 class="gray">Product type</h4>
                   <mat-form-field>
-                    <mat-select formControlName="productType" (selectionChange)="changeSelectedType($event.value)"
+                    <mat-select placeholder="Product type" formControlName="productType" (selectionChange)="changeSelectedType($event.value)"
                       [ngClass]="{ 'is-invalid': (spf.productType.touched && spf.productType.errors) || (submitted && spf.productType.errors) }">
                       <mat-option *ngFor="let sd of searchData" [value]="sd.productType">{{sd.productType}}</mat-option>
                     </mat-select>
@@ -48,9 +47,8 @@
                   </mat-form-field>
                 </div>
                 <div class="form-group">
-                  <h4 class="gray">Manufactorer</h4>
                   <mat-form-field>
-                    <mat-select formControlName="manufactorer">
+                    <mat-select placeholder="Manufactorer" formControlName="manufactorer">
                       <mat-option [value]="null">None</mat-option>
                       <div *ngIf="selectedPType != null">
                         <mat-option *ngFor="let man of selectedPType.manufactorers" [value]="man">{{man}}</mat-option>
@@ -59,15 +57,15 @@
                   </mat-form-field>
                 </div>
                 <div class="form-group">
-                  <h4 class="gray">Minimum price <b class="price">{{spf.priceMin.value}}</b></h4>
+                  <h4 class="gray h4-font">Minimum price <b class="price">{{spf.priceMin.value}}</b></h4>
                   <mat-slider class="wide" thumbLabel min="0" max="100" step="10" formControlName="priceMin"></mat-slider>
                 </div>
                 <div class="form-group">
-                  <h4 class="gray">Maximum price <b class="price">{{spf.priceMax.value}}</b></h4>
+                  <h4 class="gray h4-font">Maximum price <b class="price">{{spf.priceMax.value}}</b></h4>
                   <mat-slider class="wide" thumbLabel min="200" max="1000" step="50" formControlName="priceMax"></mat-slider>
                 </div>
                 <div class="form-group">
-                  <h4 class="gray">Minimum warranty in months</h4>
+                  <h4 class="gray h4-font">Minimum warranty in months</h4>
                   <mat-slider thumbLabel min="0" max="60" step="1" formControlName="warrantyInMonthsMin"></mat-slider>
                 </div>
                 <div class="form-group">
@@ -86,6 +84,38 @@
               &nbsp;
             </div>
           </div>
+          <div class="row">
+            <div class="col col-lg-3"></div>
+            <div class="col col-lg-6">
+              <form [formGroup]="networkSystemForm" (ngSubmit)="findNetworkSystem(networkSystemForm.value)">
+                <div class="form-group">
+                  <mat-form-field>
+                    <mat-select placeholder="Street cabling" formControlName="streetCabling" (selectionChange)="changeStreetCabling($event.value)"
+                      [ngClass]="{ 'is-invalid': (nsf.streetCabling.touched && nsf.streetCabling.errors) || (submitted && nsf.streetCabling.errors) }">
+                      <mat-option *ngFor="let sc of streetCablingList" [value]="sc">{{sc}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="(nsf.streetCabling.touched && nsf.streetCabling.errors) || (submitted && nsf.streetCabling.errors)"
+                      class="invalid-feedback">
+                      <div class="error-font" *ngIf="nsf.streetCabling.errors?.required">Street cabling is required</div>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <h4 class="gray h4-font">Floors count <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.floorsCount.value}}</b></h4>
+                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloors}}" step="1" formControlName="floorsCount"></mat-slider>
+                </div>
+                <div class="form-group">
+                  <h4 class="gray h4-font">Avarage floor surface (m^2) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageFloorSurface.value}}</b></h4>
+                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="20" max="{{maxFloorSurface}}" step="5" formControlName="avarageFloorSurface"></mat-slider>
+                </div>
+                <div class="form-group">
+                  <h4 class="gray h4-font">Avarage office count (by floor) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageOfficeCountByFloor.value}}</b></h4>
+                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloorOffices}}" step="1" formControlName="avarageOfficeCountByFloor"></mat-slider>
+                </div>
+              </form>
+            </div>
+            <div class="col col-lg-3"></div>
+          </div>
         </div>
       </mat-tab>
       <mat-tab>
@@ -101,11 +131,51 @@
           </div>
         </div>
         <div class="row">
+          <div class="col col-lg-8">
+            <div class="row marginAuto">
+              <mat-form-field>
+                <mat-select placeholder="Filter" (selectionChange)="changeSelectedFilter($event.value)">
+                  <mat-option [value]="null">None</mat-option>
+                  <mat-option *ngFor="let filter of filtersList" [value]="filter">{{filter}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="row leftMargin topMarginSmall" *ngIf="manufactorerFilter">
+                <mat-radio-group (change)="sortItems($event.value)">
+                    <mat-radio-button value="1">A-Z</mat-radio-button>
+                    <mat-radio-button class="leftMargin" value="2">Z-A</mat-radio-button>
+                  </mat-radio-group>
+              </div>
+              <div class="row leftMargin topMarginSmall" *ngIf="priceFilter">
+                <mat-radio-group (change)="sortItems($event.value)">
+                  <mat-radio-button value="1">Lowest</mat-radio-button>
+                  <mat-radio-button class="leftMargin" value="2">Highest</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="row leftMargin topMarginSmall" *ngIf="warrantyFilter">
+                <mat-radio-group (change)="sortItems($event.value)">
+                  <mat-radio-button value="1">Shortest</mat-radio-button>
+                  <mat-radio-button class="leftMargin" value="2">Longest</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="row leftMargin topMarginSmall" *ngIf="preferenceFilter">
+                <mat-radio-group (change)="sortItems($event.value)">
+                  <mat-radio-button value="1">Manufactorer</mat-radio-button>
+                  <mat-radio-button class="leftMargin" value="2">Price</mat-radio-button>
+                  <mat-radio-button class="leftMargin" value="3">Warranty</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-4">
+            <mat-paginator [pageSize]="2" [length]="foundProducts.length" class="pag"></mat-paginator>
+          </div>
+        </div>
+        <div class="row">
           <div class="col col-lg-2"></div>
           <div class="col col-lg-8">
             <div class="div-rel">
               <br />
-              <div class="row" *ngFor="let dispProd of foundProducts">
+              <div class="row" *ngFor="let dispProd of obs | async">
                 <div class="col col-lg-12 jumbotron div-jumbo">
                   <div class="row">
                     <div class="col col-lg-3">
