@@ -114,6 +114,10 @@
     background-color:rgba(245,245,245, 0.8);
 }
 
+.wifi {
+    background-color: rgba(49,27,146, 0.2);
+}
+
 /deep/ .mat-slide-toggle-bar {
     height: 21px !important;
     width: 84px !important;

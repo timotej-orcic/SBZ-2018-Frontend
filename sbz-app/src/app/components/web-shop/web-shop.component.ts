@@ -45,6 +45,8 @@ export class WebShopComponent implements OnInit {
   private maxFloors: number;
   private maxFloorSurface: number;
   private maxFloorOffices: number;
+  private maxOfficeComputers: number;
+  private maxDownloadSpeed: number;
 
   constructor(private crudService: CrudService, private alertService: AlertService,
     private router: Router, private formBuilder: FormBuilder) { }
@@ -65,6 +67,8 @@ export class WebShopComponent implements OnInit {
     this.maxFloors = 0;
     this.maxFloorSurface = 0;
     this.maxFloorOffices = 0;
+    this.maxOfficeComputers = 0;
+    this.maxDownloadSpeed = 0;
     this.getParams();
   }
 
@@ -88,8 +92,10 @@ export class WebShopComponent implements OnInit {
       avarageFloorSurface: ['', [Validators.required, Validators.min(5)]],
       avarageOfficeCountByFloor: ['', [Validators.required, Validators.min(1)]],
       avarageComputerCountByOffice: ['', [Validators.required, Validators.min(1)]],
-      wantedAvarageUploadSpeed: ['', [Validators.required, Validators.min(1)]],
+      includeWiFi: [''],
+      avarageWiFiCoverageSurfaceByFloor: [''],
       wantedAvarageDownloadSpeed: ['', [Validators.required, Validators.min(1)]],
+      wantedAvarageUploadSpeed: ['', [Validators.required, Validators.min(1)]],
       calculateWithPreferences: [''],
       budget: ['', [Validators.required, Validators.min(0)]]
     });
@@ -97,7 +103,7 @@ export class WebShopComponent implements OnInit {
 
   get nsf() { return this.networkSystemForm.controls; }
 
-  resetSearchLists() {
+  resetData() {
     if (this.dataSource != null) {
       this.disconnectPaginator();
     } else {
@@ -107,15 +113,16 @@ export class WebShopComponent implements OnInit {
     this.foundPreferences = [];
     this.connectPaginator();
     this.buildSingleProductsForm();
+    this.buildNetworkSystemForm();
   }
 
   changeShoppingMode() {
     if (this.networkSystemToggled === false) {
       this.networkSystemToggled = true;
-      this.resetSearchLists();
+      this.resetData();
     } else {
       this.networkSystemToggled = false;
-      this.resetSearchLists();
+      this.resetData();
     }
   }
 
@@ -151,7 +158,7 @@ export class WebShopComponent implements OnInit {
         this.alertService.success(res.message);
         res.payload.products.forEach(element => {
           const resProduct = new Product(element.id, element.type, element.manufactorer,
-            element.description, element.price, element.warrantyInMonths, element.lagerQuantity);
+            element.description, element.specialLabel, element.price, element.warrantyInMonths, element.lagerQuantity);
           const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
             element.base64Image.type, element.base64Image.imageBytes);
           this.foundProducts.push(new DisplayProduct(resProduct, resFile));
@@ -467,6 +474,8 @@ export class WebShopComponent implements OnInit {
       this.maxFloors = 2;
       this.maxFloorSurface = 150;
       this.maxFloorOffices = 3;
+      this.maxOfficeComputers = 5;
+      this.maxDownloadSpeed = 100;
     } else if (cabling === 'Optical-SM') {
       this.isCopper = false;
       this.isOpticalSM = true;
@@ -474,6 +483,8 @@ export class WebShopComponent implements OnInit {
       this.maxFloors = 10;
       this.maxFloorSurface = 500;
       this.maxFloorOffices = 15;
+      this.maxOfficeComputers = 10;
+      this.maxDownloadSpeed = 1000;
     } else {
       this.isCopper = false;
       this.isOpticalSM = false;
@@ -481,9 +492,46 @@ export class WebShopComponent implements OnInit {
       this.maxFloors = 100;
       this.maxFloorSurface = 2000;
       this.maxFloorOffices = 100;
+      this.maxOfficeComputers = 20;
+      this.maxDownloadSpeed = 10000;
     }
     this.nsf.floorsCount.setValue(1);
     this.nsf.avarageFloorSurface.setValue(20);
     this.nsf.avarageOfficeCountByFloor.setValue(1);
+    this.nsf.avarageComputerCountByOffice.setValue(1);
+    this.nsf.avarageWiFiCoverageSurfaceByFloor.setValue(this.maxFloorSurface / 4);
+    this.nsf.wantedAvarageDownloadSpeed.setValue(this.maxDownloadSpeed / 4);
+    this.nsf.wantedAvarageUploadSpeed.setValue(this.maxDownloadSpeed / 8);
+  }
+
+  findNetworkSystem(networkSystem) {
+    this.submitted = true;
+
+    if (this.networkSystemForm.invalid) {
+      return;
+    }
+
+    if (this.dataSource != null) {
+      this.disconnectPaginator();
+    }
+    this.foundProducts = [];
+
+    this.crudService.findNetworkSystem(networkSystem).subscribe((res: any) => {
+      if (res.success) {
+        this.alertService.success(res.message);
+        res.payload.forEach(element => {
+          const resProduct = new Product(element.id, element.type, element.manufactorer,
+            element.description, element.specialLabel, element.price, element.warrantyInMonths, element.lagerQuantity);
+          const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
+            element.base64Image.type, element.base64Image.imageBytes);
+          this.foundProducts.push(new DisplayProduct(resProduct, resFile));
+        });
+        this.hasFoundProducts = true;
+        this.selectedTabIndex = 1;
+        this.connectPaginator();
+      } else {
+        this.alertService.error(res.message);
+      }
+    });
   }
 }

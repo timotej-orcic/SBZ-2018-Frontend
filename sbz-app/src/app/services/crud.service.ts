@@ -81,4 +81,8 @@ export class CrudService {
     });
     return this.httpClient.post('/api/rest/secured/web-shop/shop', payload, {headers : this.setHeaders(null)});
   }
+
+  findNetworkSystem(networkSystem) {
+    return this.httpClient.post('/api/rest/secured/web-shop/findNetworkSystem', networkSystem, {headers : this.setHeaders(null)});
+  }
 }

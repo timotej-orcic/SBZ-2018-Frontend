@@ -36,6 +36,11 @@
                         <div class="col col-lg-4">
                             <h3 class="gray center">Description</h3>
                             <p class="center">{{dispProd.product.description}}</p>
+                            <div class="row">
+                                &nbsp;
+                            </div>
+                            <h4 class="gray center">Special label</h4>
+                            <h4 class="blue center">{{dispProd.product.specialLabel}}</h4>
                         </div>
                         <div class="col col-lg-2">
                             <h4 class="gray center">Price</h4>
@@ -127,6 +132,15 @@
         </div>
         <div class="form-group">
             <mat-form-field class="wide">
+                <input matInput type="number" formControlName="specialLabel" placeholder="Special label">
+                <mat-error *ngIf="(f.specialLabel.touched && f.specialLabel.errors) || (submitted && f.specialLabel.errors)"
+                    class="invalid-feedback">
+                    <div class="error-font" *ngIf="f.specialLabel.errors?.required">Special label is required</div>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field class="wide">
                 <input matInput type="text" formControlName="price" placeholder="Price">
                 <mat-error *ngIf="(f.price.touched && f.price.errors) || (submitted && f.price.errors)" class="invalid-feedback">
                     <div class="error-font" *ngIf="f.price.errors?.required">Price is required</div>
@@ -144,8 +158,8 @@
             </mat-error>
         </div>
         <div class="form-group">
-            <h4 class="gray">Lager quantity</h4>
-            <mat-slider class="wide" thumbLabel min="0" max="200" step="1" formControlName="lagerQuantity"></mat-slider>
+            <h4 class="gray">Lager quantity <b class="price">{{f.lagerQuantity.value}}</b></h4>
+            <mat-slider class="wide" thumbLabel min="0" max="1000" step="1" formControlName="lagerQuantity"></mat-slider>
             <mat-error *ngIf="(f.lagerQuantity.touched && f.lagerQuantity.errors) || (submitted && f.lagerQuantity.errors)"
                 class="invalid-feedback">
                 <div class="error-font" *ngIf="f.lagerQuantity.errors?.required">Lager quantity is required</div>

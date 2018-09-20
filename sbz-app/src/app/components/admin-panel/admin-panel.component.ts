@@ -40,7 +40,7 @@ export class AdminPanelComponent implements OnInit {
           if (res.success) {
             res.payload.forEach(element => {
               const resProduct = new Product(element.id, element.type, element.manufactorer,
-                element.description, element.price, element.warrantyInMonths, element.lagerQuantity);
+                element.description, element.specialLabel, element.price, element.warrantyInMonths, element.lagerQuantity);
               const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
                 element.base64Image.type, element.base64Image.imageBytes);
               this.products.push(new DisplayProduct(resProduct, resFile));
@@ -65,9 +65,10 @@ export class AdminPanelComponent implements OnInit {
       type: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       manufactorer: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       description: ['', [Validators.maxLength(300)]],
+      specialLabel: ['', [Validators.required]],
       price: ['', [Validators.required, Validators.min(0), Validators.pattern(/^((0|([1-9]\d*)){1,10})(\.\d{1,4})?$/)]],
       warrantyInMonths: ['', [Validators.required]],
-      lagerQuantity: ['', Validators.required]
+      lagerQuantity: ['', [Validators.required]]
     });
   }
 
@@ -97,6 +98,7 @@ export class AdminPanelComponent implements OnInit {
               displayProduct.product.type = res.payload.type;
               displayProduct.product.manufactorer = res.payload.manufactorer;
               displayProduct.product.description = res.payload.description;
+              displayProduct.product.specialLabel = res.payload.specialLabel;
               displayProduct.product.price = res.payload.price;
               displayProduct.product.warrantyInMonths = res.payload.warrantyInMonths;
               displayProduct.image = new DisplayFile(res.payload.base64Image.id, res.payload.base64Image.name,
@@ -114,7 +116,7 @@ export class AdminPanelComponent implements OnInit {
         if (res.success) {
           this.alertService.success(res.message);
           const resProduct = new Product(res.payload.id, res.payload.type, res.payload.manufactorer,
-            res.payload.description, res.payload.price, res.payload.warrantyInMonths, res.payload.lagerQuantity);
+            res.payload.description, res.payload.specialLabel, res.payload.price, res.payload.warrantyInMonths, res.payload.lagerQuantity);
           const resFile = new DisplayFile(res.payload.base64Image.id, res.payload.base64Image.name,
             res.payload.base64Image.type, res.payload.base64Image.imageBytes);
           this.products.push(new DisplayProduct(resProduct, resFile));
@@ -135,8 +137,10 @@ export class AdminPanelComponent implements OnInit {
         type: displayProduct.product.type,
         manufactorer: displayProduct.product.manufactorer,
         description: displayProduct.product.description,
+        specialLabel: displayProduct.product.specialLabel,
         price: displayProduct.product.price,
-        warrantyInMonths: displayProduct.product.warrantyInMonths
+        warrantyInMonths: displayProduct.product.warrantyInMonths,
+        lagerQuantity: displayProduct.product.lagerQuantity
       });
       this.smartModalService.getModal('productModal').open();
     } else {
@@ -164,6 +168,7 @@ export class AdminPanelComponent implements OnInit {
       if (this.myInputVariable != null) {
         this.myInputVariable.nativeElement.value = '';
       }
+      this.fileSelected = null;
       this.myForm.resetForm();
     }, 500);
   }

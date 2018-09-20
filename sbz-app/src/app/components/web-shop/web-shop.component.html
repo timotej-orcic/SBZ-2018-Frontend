@@ -100,17 +100,64 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="form-group">
-                  <h4 class="gray h4-font">Floors count <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.floorsCount.value}}</b></h4>
-                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloors}}" step="1" formControlName="floorsCount"></mat-slider>
-                </div>
-                <div class="form-group">
-                  <h4 class="gray h4-font">Avarage floor surface (m^2) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageFloorSurface.value}}</b></h4>
-                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="20" max="{{maxFloorSurface}}" step="5" formControlName="avarageFloorSurface"></mat-slider>
-                </div>
-                <div class="form-group">
-                  <h4 class="gray h4-font">Avarage office count (by floor) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageOfficeCountByFloor.value}}</b></h4>
-                  <mat-slider *ngIf="isCopper || isOpticalSM || isOpticalMM" [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloorOffices}}" step="1" formControlName="avarageOfficeCountByFloor"></mat-slider>
+                <div *ngIf="isCopper || isOpticalSM || isOpticalMM">
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Floors count <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.floorsCount.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloors}}" step="1"
+                      formControlName="floorsCount"></mat-slider>
+                  </div>
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Avarage floor surface (m^2) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageFloorSurface.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="20" max="{{maxFloorSurface}}" step="5"
+                      formControlName="avarageFloorSurface"></mat-slider>
+                  </div>
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Avarage office count (by floor) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageOfficeCountByFloor.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxFloorOffices}}" step="1"
+                      formControlName="avarageOfficeCountByFloor"></mat-slider>
+                  </div>
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Avarage computer count (by office) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageComputerCountByOffice.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="1" max="{{maxOfficeComputers}}" step="1"
+                      formControlName="avarageComputerCountByOffice"></mat-slider>
+                  </div>
+                  <div [ngClass]="{ 'wifi': nsf.includeWiFi.value }">
+                    <div class="form-group">
+                      <mat-checkbox formControlName="includeWiFi">Include Wi-Fi</mat-checkbox>
+                    </div>
+                    <div *ngIf="nsf.includeWiFi.value" class="form-group">
+                      <h4 class="gray h4-font">Avarage Wi-Fi coverage (by floor (m^2)) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageWiFiCoverageSurfaceByFloor.value}}</b></h4>
+                      <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{20}}" max="{{nsf.avarageFloorSurface.value}}" step="1"
+                        formControlName="avarageWiFiCoverageSurfaceByFloor"></mat-slider>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Wanted avarage download speed (mb/s) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.wantedAvarageDownloadSpeed.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 4}}" max="{{maxDownloadSpeed}}" step="1"
+                      formControlName="wantedAvarageDownloadSpeed"></mat-slider>
+                  </div>
+                  <div class="form-group">
+                    <h4 class="gray h4-font">Wanted avarage upload speed (mb/s) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.wantedAvarageUploadSpeed.value}}</b></h4>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 8}}" max="{{maxDownloadSpeed / 2}}" step="1"
+                      formControlName="wantedAvarageUploadSpeed"></mat-slider>
+                  </div>
+                  <div class="form-group">
+                    <mat-checkbox formControlName="calculateWithPreferences">Calculate with preferences</mat-checkbox>
+                  </div>
+                  <mat-form-field>
+                    <input matInput type="number" placeholder="Budget" formControlName="budget">
+                    <mat-error *ngIf="(nsf.budget.touched && nsf.budget.errors) || (submitted && nsf.budget.errors)" class="invalid-feedback">
+                      <div class="error-font" *ngIf="nsf.budget.errors?.required">Budget is required</div>
+                      <div class="error-font" *ngIf="nsf.budget.errors?.min">Minimum value is 0</div>
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="row">
+                    &nbsp;
+                  </div>
+                  <button mat-stroked-button color="primary" >Submit</button>
+                  <div class="row">
+                    &nbsp;
+                  </div>
                 </div>
               </form>
             </div>
@@ -141,9 +188,9 @@
               </mat-form-field>
               <div class="row leftMargin topMarginSmall" *ngIf="manufactorerFilter">
                 <mat-radio-group (change)="sortItems($event.value)">
-                    <mat-radio-button value="1">A-Z</mat-radio-button>
-                    <mat-radio-button class="leftMargin" value="2">Z-A</mat-radio-button>
-                  </mat-radio-group>
+                  <mat-radio-button value="1">A-Z</mat-radio-button>
+                  <mat-radio-button class="leftMargin" value="2">Z-A</mat-radio-button>
+                </mat-radio-group>
               </div>
               <div class="row leftMargin topMarginSmall" *ngIf="priceFilter">
                 <mat-radio-group (change)="sortItems($event.value)">
