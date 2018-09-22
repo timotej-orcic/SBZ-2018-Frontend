@@ -15,7 +15,8 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
   MatCheckboxModule, MatButtonModule, MatTabsModule, MatSlideToggleModule,
-    MatRadioModule, MatPaginatorModule, MatTableModule } from '@angular/material';
+    MatRadioModule, MatPaginatorModule, MatTableModule, MatDatepickerModule,
+      MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { MatSliderModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatSlideToggleModule,
     MatRadioModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

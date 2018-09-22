@@ -67,3 +67,27 @@
 .error-font {
     font-size: 12px;
 }
+
+::ng-deep .cdk-overlay-container {
+    z-index: 1200 !important;
+}
+
+::ng-deep .mat-slide-toggle-bar {
+    height: 21px !important;
+    width: 84px !important;
+  }
+  
+::ng-deep .mat-slide-toggle-thumb {
+height: 30px !important;
+width: 30px !important;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+    transform: translate3d(54px,0,0) !important;
+}
+
+::ng-deep .mat-slide-toggle-thumb-container {
+    width: 36px !important;
+    height: 36px !important;
+    top: -6px !important;
+}

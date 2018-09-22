@@ -85,4 +85,23 @@ export class CrudService {
   findNetworkSystem(networkSystem) {
     return this.httpClient.post('/api/rest/secured/web-shop/findNetworkSystem', networkSystem, {headers : this.setHeaders(null)});
   }
+
+  getDiscouts() {
+    return this.httpClient.get('api/rest/secured/admin/getDiscounts', {headers : this.setHeaders(null)});
+  }
+
+  addDiscount(discount) {
+    return this.httpClient.post('/api/rest/secured/admin/addDiscount', discount, {headers : this.setHeaders(null)});
+  }
+
+  editDiscount(discount) {
+    return this.httpClient.post('/api/rest/secured/admin/editDiscount', discount, {headers : this.setHeaders(null)});
+  }
+
+  deleteDiscount(id: number) {
+    let params = new HttpParams();
+    params = params.append('id', id.toString());
+
+    return this.httpClient.get('api/rest/secured/admin/deleteDiscount', {params: params, headers: this.setHeaders(null)});
+  }
 }

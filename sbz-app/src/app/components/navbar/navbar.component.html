@@ -7,10 +7,10 @@
         <a *ngIf="!isLoggedIn" class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
       </li>
       <li *ngIf="isLoggedIn && isAdmin" class="nav-item">
-        <a class="nav-link" href="admin-panel">Manage products</a>
+        <button class="btn btn-link nav-link" (click)="toggleManagement()">Manage products</button>
       </li>
       <li *ngIf="isLoggedIn && isAdmin" class="nav-item">
-        <a class="nav-link" href="admin-discounts">Set discounts</a>
+        <button class="btn btn-link nav-link" (click)="toggleDiscounts()">Set discounts</button>
       </li>
     </ul>
     <ul *ngIf="isLoggedIn" class="navbar-nav ml-auto">

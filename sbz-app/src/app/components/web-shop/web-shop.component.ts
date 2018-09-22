@@ -8,7 +8,7 @@ import { DisplayFile } from '../../models/display-file';
 import { DisplayProduct } from '../../models/display-product';
 import { CartDisplayProduct } from '../../models/cart-display-product';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSelect } from '@angular/material';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -44,32 +44,52 @@ export class WebShopComponent implements OnInit {
   private isOpticalMM: boolean;
   private maxFloors: number;
   private maxFloorSurface: number;
+  private minFloorSurface: number;
   private maxFloorOffices: number;
   private maxOfficeComputers: number;
   private maxDownloadSpeed: number;
+  @ViewChild('filters') filters: MatSelect;
 
   constructor(private crudService: CrudService, private alertService: AlertService,
     private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.buildSingleProductsForm();
-    this.buildNetworkSystemForm();
-    this.networkSystemToggled = false;
-    this.manufactorerFilter = false;
-    this.priceFilter = false;
-    this.warrantyFilter = false;
-    this.preferenceFilter = false;
-    this.selectedTabIndex = 0;
-    this.cartPriceSum = 0.0;
-    this.isCopper = false;
-    this.isOpticalSM = false;
-    this.isOpticalMM = false;
-    this.maxFloors = 0;
-    this.maxFloorSurface = 0;
-    this.maxFloorOffices = 0;
-    this.maxOfficeComputers = 0;
-    this.maxDownloadSpeed = 0;
-    this.getParams();
+    const userToken = localStorage.getItem('userToken');
+    if (userToken !== null) {
+      const loggedUser = JSON.parse(window.atob(userToken.split('.')[1]));
+      const userRole = loggedUser.role[0].authority;
+      if (userRole === '0') {
+        this.buildSingleProductsForm();
+        this.buildNetworkSystemForm();
+        this.networkSystemToggled = false;
+        this.manufactorerFilter = false;
+        this.priceFilter = false;
+        this.warrantyFilter = false;
+        this.preferenceFilter = false;
+        this.selectedTabIndex = 0;
+        this.cartPriceSum = 0.0;
+        this.isCopper = false;
+        this.isOpticalSM = false;
+        this.isOpticalMM = false;
+        this.maxFloors = 0;
+        this.maxFloorSurface = 0;
+        this.minFloorSurface = 0;
+        this.maxFloorOffices = 0;
+        this.maxOfficeComputers = 0;
+        this.maxDownloadSpeed = 0;
+        this.getParams();
+      } else {
+        this.alertService.error('You are not authorezed for this page');
+        setTimeout(() => {
+          this.router.navigate(['']);
+        }, 1000);
+      }
+    } else {
+      this.alertService.error('You are not signed in');
+      setTimeout(() => {
+        this.router.navigate(['']);
+      }, 1000);
+    }
   }
 
   buildSingleProductsForm() {
@@ -116,12 +136,27 @@ export class WebShopComponent implements OnInit {
     this.buildNetworkSystemForm();
   }
 
+  resetSearchFilters(ns: boolean) {
+    if (ns === true) {
+      this.filtersList = ['Manufactorer', 'Price', 'Warranty'];
+    } else {
+      this.filtersList = ['Manufactorer', 'Price', 'Warranty', 'My preferences'];
+    }
+    this.manufactorerFilter = false;
+    this.priceFilter = false;
+    this.warrantyFilter = false;
+    this.preferenceFilter = false;
+    this.filters.options.find(o => o.value === null).select();
+  }
+
   changeShoppingMode() {
     if (this.networkSystemToggled === false) {
       this.networkSystemToggled = true;
+      this.resetSearchFilters(true);
       this.resetData();
     } else {
       this.networkSystemToggled = false;
+      this.resetSearchFilters(false);
       this.resetData();
     }
   }
@@ -234,9 +269,9 @@ export class WebShopComponent implements OnInit {
     this.crudService.shop(this.cart).subscribe((res: any) => {
       if (res.success) {
         this.alertService.success('Shopping successfull');
-        setTimeout(() => {
-          this.router.navigate(['web-shop']);
-        }, 1000);
+        this.selectedTabIndex = 1;
+        this.cart = [];
+        this.calculateCartPrice();
       } else {
         this.alertService.error(res.message);
       }
@@ -276,21 +311,21 @@ export class WebShopComponent implements OnInit {
     this.disconnectPaginator();
     if (this.manufactorerFilter === true) {
       if (btnValue === '1') {
-        this.sortManufactorer(false);
+        this.sortManufactorer(false, this.networkSystemToggled);
       } else {
-        this.sortManufactorer(true);
+        this.sortManufactorer(true, this.networkSystemToggled);
       }
     } else if (this.priceFilter === true) {
       if (btnValue === '1') {
-        this.sortPrice(false);
+        this.sortPrice(false, this.networkSystemToggled);
       } else {
-        this.sortPrice(true);
+        this.sortPrice(true, this.networkSystemToggled);
       }
     } else if (this.warrantyFilter === true) {
       if (btnValue === '1') {
-        this.sortWarranty(false);
+        this.sortWarranty(false, this.networkSystemToggled);
       } else {
-        this.sortWarranty(true);
+        this.sortWarranty(true, this.networkSystemToggled);
       }
     } else if (this.preferenceFilter === true) {
       if (btnValue === '1') {
@@ -304,17 +339,25 @@ export class WebShopComponent implements OnInit {
     this.connectPaginator();
   }
 
-  sortManufactorer(invert: boolean) {
+  sortManufactorer(invert: boolean, ns: boolean) {
     this.foundProducts = this.foundProducts.sort((obj1, obj2) => {
-      if (obj1.product.manufactorer > obj2.product.manufactorer) {
-        return 1;
+      if (ns === true) {
+        if (obj1.displayProduct.product.manufactorer > obj2.displayProduct.product.manufactorer) {
+          return 1;
+        }
+        if (obj1.displayProduct.product.manufactorer < obj2.displayProduct.product.manufactorer) {
+          return -1;
+        }
+        return 0;
+      } else {
+        if (obj1.product.manufactorer > obj2.product.manufactorer) {
+          return 1;
+        }
+        if (obj1.product.manufactorer < obj2.product.manufactorer) {
+          return -1;
+        }
+        return 0;
       }
-
-      if (obj1.product.manufactorer < obj2.product.manufactorer) {
-        return -1;
-      }
-
-      return 0;
     });
 
     if (invert === true) {
@@ -322,17 +365,25 @@ export class WebShopComponent implements OnInit {
     }
   }
 
-  sortPrice(invert: boolean) {
+  sortPrice(invert: boolean, ns: boolean) {
     this.foundProducts = this.foundProducts.sort((obj1, obj2) => {
-      if (obj1.product.price > obj2.product.price) {
-        return 1;
+      if (ns === true) {
+        if (obj1.displayProduct.product.price > obj2.displayProduct.product.price) {
+          return 1;
+        }
+        if (obj1.displayProduct.product.price < obj2.displayProduct.product.price) {
+          return -1;
+        }
+        return 0;
+      } else {
+        if (obj1.product.price > obj2.product.price) {
+          return 1;
+        }
+        if (obj1.product.price < obj2.product.price) {
+          return -1;
+        }
+        return 0;
       }
-
-      if (obj1.product.price < obj2.product.price) {
-        return -1;
-      }
-
-      return 0;
     });
 
     if (invert === true) {
@@ -340,17 +391,25 @@ export class WebShopComponent implements OnInit {
     }
   }
 
-  sortWarranty(invert: boolean) {
+  sortWarranty(invert: boolean, ns: boolean) {
     this.foundProducts = this.foundProducts.sort((obj1, obj2) => {
-      if (obj1.product.warrantyInMonths > obj2.product.warrantyInMonths) {
-        return 1;
+      if (ns === true) {
+        if (obj1.displayProduct.product.warrantyInMonths > obj2.displayProduct.product.warrantyInMonths) {
+          return 1;
+        }
+        if (obj1.displayProduct.product.warrantyInMonths < obj2.displayProduct.product.warrantyInMonths) {
+          return -1;
+        }
+        return 0;
+      } else {
+        if (obj1.product.warrantyInMonths > obj2.product.warrantyInMonths) {
+          return 1;
+        }
+        if (obj1.product.warrantyInMonths < obj2.product.warrantyInMonths) {
+          return -1;
+        }
+        return 0;
       }
-
-      if (obj1.product.warrantyInMonths < obj2.product.warrantyInMonths) {
-        return -1;
-      }
-
-      return 0;
     });
 
     if (invert === true) {
@@ -361,13 +420,11 @@ export class WebShopComponent implements OnInit {
   sortPreferences(preferences: Preference[]) {
     preferences.sort((obj1, obj2) => {
       if (obj1.percentage > obj2.percentage) {
-        return 1;
-      }
-
-      if (obj1.percentage < obj2.percentage) {
         return -1;
       }
-
+      if (obj1.percentage < obj2.percentage) {
+        return 1;
+      }
       return 0;
     });
 
@@ -473,6 +530,7 @@ export class WebShopComponent implements OnInit {
       this.isOpticalMM = false;
       this.maxFloors = 2;
       this.maxFloorSurface = 150;
+      this.minFloorSurface = 20;
       this.maxFloorOffices = 3;
       this.maxOfficeComputers = 5;
       this.maxDownloadSpeed = 100;
@@ -482,6 +540,7 @@ export class WebShopComponent implements OnInit {
       this.isOpticalMM = false;
       this.maxFloors = 10;
       this.maxFloorSurface = 500;
+      this.minFloorSurface = 50;
       this.maxFloorOffices = 15;
       this.maxOfficeComputers = 10;
       this.maxDownloadSpeed = 1000;
@@ -490,6 +549,7 @@ export class WebShopComponent implements OnInit {
       this.isOpticalSM = false;
       this.isOpticalMM = true;
       this.maxFloors = 100;
+      this.minFloorSurface = 200;
       this.maxFloorSurface = 2000;
       this.maxFloorOffices = 100;
       this.maxOfficeComputers = 20;
@@ -499,7 +559,7 @@ export class WebShopComponent implements OnInit {
     this.nsf.avarageFloorSurface.setValue(20);
     this.nsf.avarageOfficeCountByFloor.setValue(1);
     this.nsf.avarageComputerCountByOffice.setValue(1);
-    this.nsf.avarageWiFiCoverageSurfaceByFloor.setValue(this.maxFloorSurface / 4);
+    this.nsf.avarageWiFiCoverageSurfaceByFloor.setValue(this.minFloorSurface);
     this.nsf.wantedAvarageDownloadSpeed.setValue(this.maxDownloadSpeed / 4);
     this.nsf.wantedAvarageUploadSpeed.setValue(this.maxDownloadSpeed / 8);
   }
@@ -520,11 +580,13 @@ export class WebShopComponent implements OnInit {
       if (res.success) {
         this.alertService.success(res.message);
         res.payload.forEach(element => {
-          const resProduct = new Product(element.id, element.type, element.manufactorer,
-            element.description, element.specialLabel, element.price, element.warrantyInMonths, element.lagerQuantity);
-          const resFile = new DisplayFile(element.base64Image.id, element.base64Image.name,
-            element.base64Image.type, element.base64Image.imageBytes);
-          this.foundProducts.push(new DisplayProduct(resProduct, resFile));
+          const resProduct = new Product(element.product.id, element.product.type, element.product.manufactorer,
+            element.product.description, element.product.specialLabel, element.product.price, element.product.warrantyInMonths,
+            element.product.lagerQuantity);
+          const resFile = new DisplayFile(element.product.base64Image.id, element.product.base64Image.name,
+            element.product.base64Image.type, element.product.base64Image.imageBytes);
+          const resDispProd = new DisplayProduct(resProduct, resFile);
+          this.foundProducts.push(new CartDisplayProduct(resDispProd, element.quantity));
         });
         this.hasFoundProducts = true;
         this.selectedTabIndex = 1;
@@ -533,5 +595,16 @@ export class WebShopComponent implements OnInit {
         this.alertService.error(res.message);
       }
     });
+  }
+
+  addAllNSItemsToCart() {
+    this.foundProducts.forEach(p => {
+      if (!this.cart.includes(p)) {
+        this.cart.push(p);
+      }
+    });
+    this.calculateCartPrice();
+    this.alertService.success('Succesfully added to cart');
+    this.selectedTabIndex = 2;
   }
 }

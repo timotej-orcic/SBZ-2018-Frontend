@@ -1,94 +1,186 @@
-<app-navbar></app-navbar>
-<div class="row">
-    <div class="col">
-        <h1 class="title">Manage products</h1>
-    </div>
-</div>
-<br />
-<div class="row center">
-    <div class="col">
-        <button class="btn btn-default font-btn" title="Add new product" (click)="smartModalService.getModal('productModal').open()">
-            <span class="hover-blue">
-                <fa name="fas fa-plus-square fa-3x" aria-hidden="true"></fa>
-            </span>
-        </button>
-    </div>
-</div>
-<div class="row">
-    <div class="col col-lg-2"></div>
-    <div class="col col-lg-8">
-        <div class="div-rel">
-            <br />
-            <div class="row" *ngFor="let dispProd of products">
-                <div class="col col-lg-12 jumbotron div-jumbo">
-                    <div class="row">
-                        <div class="col col-lg-3">
-                            <h3 class="gray">{{dispProd.product.type}}</h3>
-                            <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <img [src]="dispProd.image.src" height="128" width="128">
-                        </div>
-                        <div class="col col-lg-4">
-                            <h3 class="gray center">Description</h3>
-                            <p class="center">{{dispProd.product.description}}</p>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <h4 class="gray center">Special label</h4>
-                            <h4 class="blue center">{{dispProd.product.specialLabel}}</h4>
-                        </div>
-                        <div class="col col-lg-2">
-                            <h4 class="gray center">Price</h4>
-                            <h4 class="blue center">{{dispProd.product.price}}</h4>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <h4 class="gray center">Warranty in months</h4>
-                            <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <h4 class="gray center">Lager quantity</h4>
-                            <h4 class="blue center">{{dispProd.product.lagerQuantity}}</h4>
-                        </div>
-                        <div class="col col-lg-3 center">
-                            <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)">
-                                <span class="hover-blue">
-                                    <fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa>
-                                </span>
-                            </button>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <div class="row">
-                                &nbsp;
-                            </div>
-                            <button class="btn btn-default font-btn" title="Delete product" (click)="deleteProduct(dispProd.product.id)">
-                                <span class="hover-gray">
-                                    <fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                &nbsp;
-            </div>
+<app-navbar (discountEvent)="setMode($event)"></app-navbar>
+<div *ngIf="!discountsToggled">
+    <div class="row">
+        <div class="col">
+            <h1 class="title">Manage products</h1>
         </div>
     </div>
-    <div class="col col-lg-2">
-        <app-alert></app-alert>
+    <br />
+    <div class="row center">
+        <div class="col">
+            <button class="btn btn-default font-btn" title="Add new product" (click)="smartModalService.getModal('productModal').open()">
+                <span class="hover-blue">
+                    <fa name="fas fa-plus-square fa-3x" aria-hidden="true"></fa>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-2"></div>
+        <div class="col col-lg-8">
+            <div class="div-rel">
+                <br />
+                <div class="row" *ngFor="let dispProd of products">
+                    <div class="col col-lg-12 jumbotron div-jumbo">
+                        <div class="row">
+                            <div class="col col-lg-3">
+                                <h3 class="gray">{{dispProd.product.type}}</h3>
+                                <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <img [src]="dispProd.image.src" height="128" width="128">
+                            </div>
+                            <div class="col col-lg-4">
+                                <h3 class="gray center">Description</h3>
+                                <p class="center">{{dispProd.product.description}}</p>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Special label</h4>
+                                <h4 class="blue center">{{dispProd.product.specialLabel}}</h4>
+                            </div>
+                            <div class="col col-lg-2">
+                                <h4 class="gray center">Price</h4>
+                                <h4 class="blue center">{{dispProd.product.price}}</h4>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Warranty in months</h4>
+                                <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Lager quantity</h4>
+                                <h4 class="blue center">{{dispProd.product.lagerQuantity}}</h4>
+                            </div>
+                            <div class="col col-lg-3 center">
+                                <button class="btn btn-default font-btn" title="Edit product" (click)="generateEditModal(dispProd.product.id)">
+                                    <span class="hover-blue">
+                                        <fa name="fas fa-pencil fa-3x" aria-hidden="true"></fa>
+                                    </span>
+                                </button>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <button class="btn btn-default font-btn" title="Delete product" (click)="deleteProduct(dispProd.product.id)">
+                                    <span class="hover-gray">
+                                        <fa name="fas fa-trash-o fa-3x" aria-hidden="true"></fa>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-2">
+            <app-alert></app-alert>
+        </div>
+    </div>
+</div>
+<div *ngIf="discountsToggled">
+    <div class="row">
+        <div class="col">
+            <h1 class="title">Set discounts</h1>
+        </div>
+    </div>
+    <br />
+    <div class="row marginTop">
+        <div class="col col-lg-4">
+            <mat-slide-toggle (change)="changeDiscountsMode()">
+                <span class="title">
+                    <h4 *ngIf="!automaticDiscounts">Manual</h4>
+                    <h4 *ngIf="automaticDiscounts">Automatic (rule based)</h4>
+                </span></mat-slide-toggle>
+        </div>
+        <div class="col col-lg-6"></div>
+        <div class="col col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-2"></div>
+        <div *ngIf="!automaticDiscounts" class="col col-lg-8">
+            <div class="div-rel">
+                <br />
+                <div class="row" *ngFor="let dispProd of products">
+                    <div class="col col-lg-12 jumbotron div-jumbo">
+                        <div class="row">
+                            <div class="col col-lg-3">
+                                <h3 class="gray">{{dispProd.product.type}}</h3>
+                                <h3 class="blue"><span class="gray">by</span> {{dispProd.product.manufactorer}}</h3>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <img [src]="dispProd.image.src" height="128" width="128">
+                            </div>
+                            <div class="col col-lg-4">
+                                <h3 class="gray center">Description</h3>
+                                <p class="center">{{dispProd.product.description}}</p>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Special label</h4>
+                                <h4 class="blue center">{{dispProd.product.specialLabel}}</h4>
+                            </div>
+                            <div class="col col-lg-2">
+                                <h4 class="gray center">Price</h4>
+                                <h4 class="blue center">{{dispProd.product.price}}</h4>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Warranty in months</h4>
+                                <h4 class="blue center">{{dispProd.product.warrantyInMonths}}</h4>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <h4 class="gray center">Lager quantity</h4>
+                                <h4 class="blue center">{{dispProd.product.lagerQuantity}}</h4>
+                            </div>
+                            <div class="col col-lg-3 center">
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <div class="row">
+                                    &nbsp;
+                                </div>
+                                <button class="btn btn-default font-btn" title="Set discount" (click)="generateDiscountModal(dispProd.product.id)">
+                                    <span class="hover-blue">
+                                        <fa name="fas fa-wrench fa-3x" aria-hidden="true"></fa>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-2">
+            <app-alert></app-alert>
+        </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Products Modal -->
 <ngx-smart-modal #productModal identifier="productModal" [closable]="false" [escapable]="false" [dismissable]="false">
     <span *ngIf="!editing">
         <h2 class="title">Add product</h2>
@@ -96,7 +188,7 @@
     <span *ngIf="editing">
         <h2 class="title">Edit product</h2>
     </span>
-    <form [formGroup]="productForm" (ngSubmit)="postForm(productForm.value)">
+    <form #prodForm="ngForm" [formGroup]="productForm" (ngSubmit)="postForm(productForm.value)">
         <div class="form-group">
             <input type="hidden" formControlName="id" class="form-control">
         </div>
@@ -165,7 +257,7 @@
                 <div class="error-font" *ngIf="f.lagerQuantity.errors?.required">Lager quantity is required</div>
             </mat-error>
         </div>
-        <div *ngIf="editing" >
+        <div *ngIf="editing">
             <mat-checkbox [checked]="editingImage" (change)="editImage()">
                 Replace image
             </mat-checkbox>
@@ -176,7 +268,7 @@
             </div>
             <input #imageInput type="file" accept="image/*" (change)="onFileChange($event)">
             <mat-error *ngIf="submitted && !isFileAttached" class="invalid-feedback">
-                <div *ngIf="submitted && !isFileAttached">Image is required</div>
+                <div class="error-font" *ngIf="submitted && !isFileAttached">Image is required</div>
             </mat-error>
         </span>
         <div class="row">
@@ -184,7 +276,63 @@
         </div>
         <button mat-raised-button color="primary" class="wide">Submit</button>
     </form>
-    <button aria-label="Close" class="nsm-dialog-btn-close" type="button" (click)="closeModal()">
+    <button aria-label="Close" class="nsm-dialog-btn-close" type="button" (click)="closeProductsModal()">
+        <span class="hover-gray">
+            <fa name="fas fa-times fa-2x" aria-hidden="true"></fa>
+        </span>
+    </button>
+</ngx-smart-modal>
+
+<!-- Discounts Modal -->
+<ngx-smart-modal #discountModal identifier="discountModal" [closable]="false" [escapable]="false" [dismissable]="false">
+    <span *ngIf="isNewDiscount">
+        <h2 class="title">Set discount</h2>
+    </span>
+    <span *ngIf="!isNewDiscount">
+        <h2 class="title">Edit discount</h2>
+    </span>
+    <br />
+    <form #discForm="ngForm" [formGroup]="discountForm" (ngSubmit)="postDiscountForm(discountForm.value)">
+        <div class="form-group">
+            <input type="hidden" formControlName="id" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="hidden" formControlName="discObjId" class="form-control">
+        </div>
+        <mat-form-field>
+            <input formControlName="beginDate" matInput [min]="dateNow" [matDatepicker]="picker1" (dateChange)="setMinDate($event)"
+                placeholder="Begin date" [disabled]="!isNewDiscount">
+            <mat-error *ngIf="(dsf.beginDate.touched && dsf.beginDate.errors) || (discSubmitted && dsf.beginDate.errors)" class="invalid-feedback">
+                <div class="error-font" *ngIf="dsf.beginDate.errors?.required">Begin date is required</div>
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker class="datepicker" #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="endDate" matInput [min]="minDate" [matDatepicker]="picker2" placeholder="End date">
+            <mat-error *ngIf="(dsf.endDate.touched && dsf.endDate.errors) || (discSubmitted && dsf.endDate.errors)" class="invalid-feedback">
+                <div class="error-font" *ngIf="dsf.endDate.errors?.required">End date is required</div>
+                <div class="error-font" *ngIf="dsf.endDate.errors?.matDatepickerMin">End date must be greater then the begin date</div>
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker class="datepicker" #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="number" min="0" max="100" formControlName="value" placeholder="Value (%)">
+            <mat-error *ngIf="(dsf.value.touched && dsf.value.errors) || (discSubmitted && dsf.value.errors)" class="invalid-feedback">
+                <div class="error-font" *ngIf="dsf.value.errors?.required">Value is required</div>
+                <div class="error-font" *ngIf="dsf.value.errors?.min">Minimum value is 0</div>
+                <div class="error-font" *ngIf="dsf.value.errors?.max">Maximum value is 100</div>
+            </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="wide">Submit</button>
+        <div class="row">
+            &nbsp;
+        </div>
+        <button *ngIf="!isNewDiscount" mat-raised-button color="warn" class="wide"
+            (click)="deleteDiscount(discountForm.value.id)">Delete discount</button>
+    </form>
+    <button aria-label="Close" class="nsm-dialog-btn-close" type="button" (click)="closeDiscountsModal()">
         <span class="hover-gray">
             <fa name="fas fa-times fa-2x" aria-hidden="true"></fa>
         </span>

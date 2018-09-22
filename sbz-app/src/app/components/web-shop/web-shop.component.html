@@ -108,7 +108,7 @@
                   </div>
                   <div class="form-group">
                     <h4 class="gray h4-font">Avarage floor surface (m^2) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageFloorSurface.value}}</b></h4>
-                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="20" max="{{maxFloorSurface}}" step="5"
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{minFloorSurface}}" max="{{maxFloorSurface}}" step="5"
                       formControlName="avarageFloorSurface"></mat-slider>
                   </div>
                   <div class="form-group">
@@ -127,26 +127,27 @@
                     </div>
                     <div *ngIf="nsf.includeWiFi.value" class="form-group">
                       <h4 class="gray h4-font">Avarage Wi-Fi coverage (by floor (m^2)) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.avarageWiFiCoverageSurfaceByFloor.value}}</b></h4>
-                      <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{20}}" max="{{nsf.avarageFloorSurface.value}}" step="1"
-                        formControlName="avarageWiFiCoverageSurfaceByFloor"></mat-slider>
+                      <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{minFloorSurface}}" max="{{nsf.avarageFloorSurface.value}}"
+                        step="1" formControlName="avarageWiFiCoverageSurfaceByFloor"></mat-slider>
                     </div>
                   </div>
                   <div class="form-group">
                     <h4 class="gray h4-font">Wanted avarage download speed (mb/s) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.wantedAvarageDownloadSpeed.value}}</b></h4>
-                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 4}}" max="{{maxDownloadSpeed}}" step="1"
-                      formControlName="wantedAvarageDownloadSpeed"></mat-slider>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 4}}" max="{{maxDownloadSpeed}}"
+                      step="1" formControlName="wantedAvarageDownloadSpeed"></mat-slider>
                   </div>
                   <div class="form-group">
                     <h4 class="gray h4-font">Wanted avarage upload speed (mb/s) <b class="price" [ngClass]="{ 'floatNone' : isCopper}">{{nsf.wantedAvarageUploadSpeed.value}}</b></h4>
-                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 8}}" max="{{maxDownloadSpeed / 2}}" step="1"
-                      formControlName="wantedAvarageUploadSpeed"></mat-slider>
+                    <mat-slider [ngClass]="{ 'wide' : !isCopper}" thumbLabel min="{{maxDownloadSpeed / 8}}" max="{{maxDownloadSpeed / 2}}"
+                      step="1" formControlName="wantedAvarageUploadSpeed"></mat-slider>
                   </div>
                   <div class="form-group">
                     <mat-checkbox formControlName="calculateWithPreferences">Calculate with preferences</mat-checkbox>
                   </div>
                   <mat-form-field>
                     <input matInput type="number" placeholder="Budget" formControlName="budget">
-                    <mat-error *ngIf="(nsf.budget.touched && nsf.budget.errors) || (submitted && nsf.budget.errors)" class="invalid-feedback">
+                    <mat-error *ngIf="(nsf.budget.touched && nsf.budget.errors) || (submitted && nsf.budget.errors)"
+                      class="invalid-feedback">
                       <div class="error-font" *ngIf="nsf.budget.errors?.required">Budget is required</div>
                       <div class="error-font" *ngIf="nsf.budget.errors?.min">Minimum value is 0</div>
                     </mat-error>
@@ -154,7 +155,7 @@
                   <div class="row">
                     &nbsp;
                   </div>
-                  <button mat-stroked-button color="primary" >Submit</button>
+                  <button mat-stroked-button color="primary">Submit</button>
                   <div class="row">
                     &nbsp;
                   </div>
@@ -178,10 +179,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col col-lg-8">
+          <div class="col col-lg-5">
             <div class="row marginAuto">
               <mat-form-field>
-                <mat-select placeholder="Filter" (selectionChange)="changeSelectedFilter($event.value)">
+                <mat-select #filters placeholder="Filter" [disabled]="foundProducts.length == 0"
+                  (selectionChange)="changeSelectedFilter($event.value)">
                   <mat-option [value]="null">None</mat-option>
                   <mat-option *ngFor="let filter of filtersList" [value]="filter">{{filter}}</mat-option>
                 </mat-select>
@@ -213,11 +215,17 @@
               </div>
             </div>
           </div>
+          <div class="col col-lg-3">
+            <div class="row marginAuto" *ngIf="networkSystemToggled && foundProducts.length > 0">
+              <button mat-stroked-button color="primary" (click)="addAllNSItemsToCart()"
+                class="leftMargin topMarginSmall">Add all to cart</button>
+            </div>
+          </div>
           <div class="col col-lg-4">
             <mat-paginator [pageSize]="2" [length]="foundProducts.length" class="pag"></mat-paginator>
           </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="!networkSystemToggled">
           <div class="col col-lg-2"></div>
           <div class="col col-lg-8">
             <div class="div-rel">
@@ -270,6 +278,67 @@
           </div>
           <div class="col col-lg-2"></div>
         </div>
+        <div class="row" *ngIf="networkSystemToggled">
+          <div class="col col-lg-2"></div>
+          <div class="col col-lg-8">
+            <div class="div-rel">
+              <br />
+              <div class="row" *ngFor="let cartItem of obs | async">
+                <div class="col col-lg-12 jumbotron div-jumbo">
+                  <div class="row">
+                    <div class="col col-lg-3">
+                      <h3 class="gray">{{cartItem.displayProduct.product.type}}</h3>
+                      <h3 class="blue"><span class="gray">by</span> {{cartItem.displayProduct.product.manufactorer}}</h3>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <img [src]="cartItem.displayProduct.image.src" height="128" width="128">
+                    </div>
+                    <div class="col col-lg-4">
+                      <h3 class="gray center">Description</h3>
+                      <p class="center">{{cartItem.displayProduct.product.description}}</p>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <h4 class="gray center">Quantity</h4>
+                      <h4 class="blue center">{{cartItem.quantity}}</h4>
+                    </div>
+                    <div class="col col-lg-2">
+                      <h4 class="gray center">Unit Price</h4>
+                      <h4 class="blue center">{{cartItem.displayProduct.product.price}}</h4>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <div class="row">
+                        &nbsp;
+                      </div>
+                      <h4 class="gray center">Price</h4>
+                      <h4 class="blue center">{{cartItem.displayProduct.product.price * cartItem.quantity}}</h4>
+                    </div>
+                    <div class="col col-lg-3 center">
+                      <h4 class="gray center">Warranty in months</h4>
+                      <h4 class="blue center">{{cartItem.displayProduct.product.warrantyInMonths}}</h4>
+                    </div>
+                  </div>
+                </div>
+                &nbsp;
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-2"></div>
+        </div>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
@@ -290,7 +359,7 @@
           <div class="col col-lg-8">
             <div class="div-rel">
               <br />
-              <div class="row" *ngFor="let item of singleProductsCart">
+              <div class="row" *ngFor="let item of cart">
                 <div class="col col-lg-12 jumbotron div-jumbo">
                   <div class="row">
                     <div class="col col-lg-3">

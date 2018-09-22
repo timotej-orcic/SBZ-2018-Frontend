@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { AlertService } from '../../services/alert.service';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   private isLoggedIn = false;
   private isAdmin = false;
   private username = '';
+  @Output() discountEvent = new EventEmitter<boolean>();
 
   constructor(private loginService: LoginService, private alertService: AlertService,
     private router: Router) { }
@@ -42,5 +43,13 @@ export class NavbarComponent implements OnInit {
         this.alertService.error(res.message);
       }
     });
+  }
+
+  toggleDiscounts() {
+    this.discountEvent.emit(true);
+  }
+
+  toggleManagement() {
+    this.discountEvent.emit(false);
   }
 }
